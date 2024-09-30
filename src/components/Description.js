@@ -1,0 +1,61 @@
+import React from 'react';
+import { FaStar, FaPlay, FaPlus, FaStarHalfAlt } from 'react-icons/fa'; // Importing icons from react-icons
+import Genres from './Genres';
+
+const MovieDetail = ({ movie }) => {
+  const { name, title, season, vote_average, genre_ids, overview } = movie;
+
+  // Generate stars based on rating
+const renderStars = (rating) => {
+    const stars = [];
+    for (let i = 1; i <= 5; i++) {
+        if (i <= rating) {
+            stars.push(<FaStar key={i} className="inline-block text-yellow-400" />);
+        } else if (i - rating <= 0.5) {
+            stars.push(<FaStarHalfAlt key={i} className="inline-block text-yellow-400" />);
+        } else {
+            stars.push(<FaStar key={i} className="inline-block text-gray-400" />);
+        }
+    }
+    return stars;
+};
+
+  return (
+    <div className="absolute text-white p-8 rounded-lg ml-[15vw] ">
+      <div className="relative z-0 max-w-2xl text-left mt-12 " >
+        {/* Title and Season */}
+        {title?<h1 className="text-4xl font-bold ">{title.split(":")[0]}</h1>
+                    :<h1 className="text-4xl font-bold ">{name.split(":")[0]}</h1>
+        }
+        
+        {/* <p className="text-lg mb-2">Season {season}</p> */}
+
+        {/* Ratings */}
+        <div className="flex items-center space-x-2">
+          {renderStars(Math.round((vote_average / 2) * 10) / 10)}
+          <span className="ml-2"> {(Math.round((vote_average / 2) * 10) / 10)}/5</span>
+        </div>
+
+        {/* Genres */}
+        <Genres genreIds={genre_ids} />
+
+        {/* Buttons */}
+        <div className="flex items-center my-4">
+          <button className="flex items-center bg-green-300 px-4 py-2 rounded-[5px] shadow-md hover:bg-green-400 transition">
+            <FaPlay className=" ml-1 mr-1" />
+          </button>
+          <button className="flex items-center bg-gray-500 px-4 py-2 rounded-[5px] shadow-md hover:bg-gray-600 transition">
+            <FaPlus className="ml-1 mr-1" />
+          </button>
+        </div>
+
+        {/* Movie Description */}
+        <p className="text-white text-sm leading-relaxed w-[50%]">
+          {overview}
+        </p>
+      </div>
+    </div>
+  );
+};
+
+export default MovieDetail;
