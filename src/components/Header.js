@@ -1,18 +1,32 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaSearch } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
-const Navbar = ({ setActiveSection , def }) => {
+const Navbar = ({ def }) => {
     const [active, setActive] = useState(def); // Default active item
     const sections = ['Home', 'Tv Shows', 'Movies', 'Upcoming'];
+    const [latest, setLatest] = useState(def);
     const [searchActive, setSearchActive] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
+    const location = useLocation();
+
+
+    useEffect(() => {
+        // Define the paths where you want to keep the active state
+        const desiredPaths = ['/', '/tv-shows', '/movies', '/upcoming'];        
+
+        if (!desiredPaths.includes(location.pathname)) {
+            setActive(null);
+        }
+        else{
+            setActive(latest)
+        }
+    }, [location.pathname]);
+
 
     const handleSectionClick = (section) => {
         setActive(section);
-        if(def){
-            setActiveSection(section);
-        }
+        setLatest(section);
     };
 
     return (
@@ -63,6 +77,7 @@ const Navbar = ({ setActiveSection , def }) => {
                         onClick={() => {
                             console.log("Search query:", searchQuery);
                             setSearchActive(false);
+                            setActive(null)
                         }}
                         className="ml-2 px-4 py-2 bg-cyan-500 text-white rounded-md"
                     >

@@ -3,7 +3,7 @@ import { FaStar, FaPlay, FaPlus, FaStarHalfAlt } from 'react-icons/fa'; // Impor
 import Genres from './Genres';
 
 const MovieDetail = ({ movie }) => {
-  const { name, title, season, vote_average, genre_ids, overview } = movie;
+  const { name, title, vote_average, genre_ids, overview } = movie;
 
   // Generate stars based on rating
 const renderStars = (rating) => {
@@ -21,14 +21,12 @@ const renderStars = (rating) => {
 };
 
   return (
-    <div className="absolute text-white p-8 rounded-lg ml-[15vw] ">
+    <div className="absolute text-white p-8 rounded-lg ml-[5vw] ">
       <div className="relative z-0 max-w-2xl text-left mt-12 " >
         {/* Title and Season */}
         {title?<h1 className="text-4xl font-bold ">{title.split(":")[0]}</h1>
                     :<h1 className="text-4xl font-bold ">{name.split(":")[0]}</h1>
         }
-        
-        {/* <p className="text-lg mb-2">Season {season}</p> */}
 
         {/* Ratings */}
         <div className="flex items-center space-x-2">
@@ -50,7 +48,7 @@ const renderStars = (rating) => {
         </div>
 
         {/* Movie Description */}
-        <p className="text-white text-sm leading-relaxed w-[50%]">
+        <p className="text-white text-sm leading-relaxed w-[85%]">
           {overview}
         </p>
       </div>

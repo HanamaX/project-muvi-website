@@ -56,12 +56,12 @@ useEffect(() => {
     <div className="relative h-screen flex flex-col justify-end">
       {/* Background div with the current center movie's image */}
       <div>
-      <div
-        className="absolute inset-0 z-0 bg-cover bg-center opacity-40 w-full h-full"
-        style={{ backgroundImage: `url(https://image.tmdb.org/t/p/original${centerMovie.backdrop_path})` }}
-      >
-      </div>
-      <MovieDetail movie={centerMovie} />
+        <div
+          className="absolute inset-0 z-0 bg-cover bg-center opacity-40 w-full h-full"
+          style={{ backgroundImage: `url(https://image.tmdb.org/t/p/original${centerMovie.backdrop_path})` }}
+        >
+        </div>
+        <MovieDetail movie={centerMovie} />
 
       </div>
       

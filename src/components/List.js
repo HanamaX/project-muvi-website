@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 // import 'tailwindcss/tailwind.css';
 
 const List = ({ items, head }) => {
@@ -11,13 +12,15 @@ const List = ({ items, head }) => {
       <h1 className='text-left text-4xl font-extralight font-serif ml-[1vw] text-cyan-500'>{head}</h1>
       <div className="grid grid-cols-4 sm:grid-cols-6 gap-1">
         {itemsToShow.map((movie, index) => (
-          <div key={movie.id || index} className="flex flex-col items-center">
-            <img
-              src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-              alt={movie.title}
-              className="h-[90%] w-[90%] object-cover rounded-md shadow-md shadow-black"
-            />
-          </div>
+          <Link to={movie.first_air_date?`/details/${'tv'}/${movie.id}`:`/details/${'movie'}/${movie.id}`} className="flex flex-col items-center" key={movie.id || index}>
+            <div key={movie.id || index} className="flex flex-col items-center">
+              <img
+                src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                alt={movie.title}
+                className="h-[95%] w-[100%] object-cover rounded-md shadow-md shadow-black"
+              />
+            </div>
+          </Link>
         ))}
       </div>
       <button

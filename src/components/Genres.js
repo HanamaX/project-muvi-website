@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Genres = ({ genreIds }) => {
+const Genres = ({ genreIds, genre }) => {
     const genres = [
       { id: 28, name: "Action" }, { id: 12, name: "Adventure" }, { id: 16, name: "Animation" },
       { id: 35, name: "Comedy" }, { id: 80, name: "Crime" }, { id: 99, name: "Documentary" },
@@ -14,17 +14,14 @@ const Genres = ({ genreIds }) => {
       { id: 10768, name: "War & Politics" }
     ];
 
-    const genreNames = genreIds.map(id => {
+    const genreNames =genreIds? genreIds.map(id => {
         const genre = genres.find(g => g.id === id);
         return genre ? genre.name : 'Unknown';
-    });
+        })
+    : genre.map(({ name }) => name);
 
     return (
-        // <div>
-        //     {genreNames.map((name, index) => (
-        //         <span key={index}>{name}{index < genreNames.length - 1 ? ', ' : ''}</span>
-        //     ))}
-        // </div>
+
         <div className="flex space-x-4 my-4 text-sm">
           {genreNames.map((name, index) => (
             <span

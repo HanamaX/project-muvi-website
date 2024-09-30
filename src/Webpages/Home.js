@@ -13,13 +13,16 @@ function App() {
   const [data, setData] = useState(null); // Initialize with null
   const [head, setHead] = useState([]);
 
+  
+
   useEffect(() => {
     if (param) {
       setActiveSection(param);
       // Reset param after using it
-      location.state = {};
+      location.state = null;
     }
   }, [param, location]);
+  
 
   useEffect(() => {
     const getData = async () => {
@@ -50,7 +53,7 @@ function App() {
       setHead([head1, head2]);
     };
     getData();
-  }, [activeSection, param]);
+  }, [activeSection]);
 
   // Return null if data is not yet loaded
   if (!data) {
@@ -59,9 +62,7 @@ function App() {
 
   return (
     <div className="App bg-gray-900 text-white">
-      <section className="w-full z-20 fixed">
-        <Navbar setActiveSection={setActiveSection} def={activeSection} />
-      </section>
+
       <section className="mx-auto">
         <MovieCarousel data={data[0]} />
         <List items={data[1]} head={head[0]} />
