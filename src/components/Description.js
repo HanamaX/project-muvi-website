@@ -1,6 +1,7 @@
 import React from 'react';
 import { FaStar, FaPlay, FaPlus, FaStarHalfAlt } from 'react-icons/fa'; // Importing icons from react-icons
 import Genres from './Genres';
+import { Link } from 'react-router-dom';
 
 const MovieDetail = ({ movie }) => {
   const { name, title, vote_average, genre_ids, overview } = movie;
@@ -22,7 +23,7 @@ const renderStars = (rating) => {
 
   return (
     <div className="absolute text-white p-8 rounded-lg ml-[5vw] ">
-      <div className="relative z-0 max-w-2xl text-left mt-12 " >
+      <div className="relative z-10 max-w-2xl text-left mt-12 " >
         {/* Title and Season */}
         {title?<h1 className="text-4xl font-bold ">{title.split(":")[0]}</h1>
                     :<h1 className="text-4xl font-bold ">{name.split(":")[0]}</h1>
@@ -35,13 +36,17 @@ const renderStars = (rating) => {
         </div>
 
         {/* Genres */}
+        <div className=' max-w-full'>
         <Genres genreIds={genre_ids} />
+        </div>
 
         {/* Buttons */}
         <div className="flex items-center my-4">
-          <button className="flex items-center bg-green-300 px-4 py-2 rounded-[5px] shadow-md hover:bg-green-400 transition">
+        <Link to={movie.first_air_date ? `/details/${'tv'}/${movie.id}` : `/details/${'movie'}/${movie.id}`} className="flex flex-col items-center" key={movie.id }>
+          <button className="flex items-center bg-green-300 px-4 py-2 rounded-[5px] shadow-md hover:bg-green-400 hover:px-10 hover:py-5 transition-all">
             <FaPlay className=" ml-1 mr-1" />
           </button>
+          </Link>
           <button className="flex items-center bg-gray-500 px-4 py-2 rounded-[5px] shadow-md hover:bg-gray-600 transition">
             <FaPlus className="ml-1 mr-1" />
           </button>

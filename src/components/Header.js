@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { FaSearch } from 'react-icons/fa';
+import { FaSearch ,FaTimes ,FaBars } from 'react-icons/fa';
 import { Link, useLocation } from 'react-router-dom';
 
 const Navbar = ({ def }) => {
-    const [active, setActive] = useState(def); // Default active item
     const sections = ['Home', 'Tv Shows', 'Movies', 'Upcoming'];
     const [latest, setLatest] = useState(def);
+    const [menuActive, setMenuActive] = useState(false);
     const [searchActive, setSearchActive] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
     const location = useLocation();
-
+    const {param} = location.state || {};    
+    const [active, setActive] = useState(param); // Default active item
+    
 
     useEffect(() => {
         // Define the paths where you want to keep the active state
@@ -19,7 +21,7 @@ const Navbar = ({ def }) => {
             setActive(null);
         }
         else{
-            setActive(latest)
+            setActive(param || latest)
         }
     }, [location.pathname]);
 
@@ -27,20 +29,28 @@ const Navbar = ({ def }) => {
     const handleSectionClick = (section) => {
         setActive(section);
         setLatest(section);
+        setMenuActive(false);
     };
 
     return (
         <>
             {/* Navbar */}
             <nav className=" bg-white py-1 px-8 flex justify-between items-center border-0 border-b-2 border-solid border-b-gray-100 border-opacity-30 bg-opacity-5">
+                {/* Search Icon */}
+                <div className="text-cyan-500 cursor-pointer md:hidden" onClick={() => setSearchActive(!searchActive)}>
+                    <FaSearch size={24} />
+                </div>
+
                 {/* Logo */}
-                <div className="text-white font-bold text-2xl">
+                <div className={`text-white font-bold text-2xl ${menuActive?'hidden':'flex'} md:flex`}>
                     Hanama<span className="text-cyan-500">X</span>
                 </div>
+
+                
                 
                 {/* Nav items */}
-                <ul className="flex space-x-8 text-white list-none ">
-                    {sections.map((item) => (
+                <ul className={`flex-row space-x-[2vw] md:space-x-8 -ml-[2vh] md:ml-0 text-white list-none ${menuActive ? 'flex' : 'hidden'} md:flex`}>
+                {sections.map((item) => (
                         <li
                             key={item}
                             className={`relative cursor-pointer hover:text-cyan-500 ${
@@ -48,7 +58,7 @@ const Navbar = ({ def }) => {
                             }`}
                             onClick={() => handleSectionClick(item)}
                         >
-                            <Link className=' no-underline text-inherit' to="/" state={{param:item}}>
+                            <Link className=' no-underline text-inherit' to="/" state={{param:item}} >
                                 {item}
                             </Link>
                             {active === item && <div className="absolute border-b-[2px] border-0 border-cyan-500 border-solid w-full border-opacity-40 mt-[2.82vh]"></div>}
@@ -56,9 +66,14 @@ const Navbar = ({ def }) => {
                     ))}
                 </ul>
                 
-                {/* Search Icon */}
-                <div className="text-cyan-500 cursor-pointer" onClick={() => setSearchActive(!searchActive)}>
-                    <FaSearch size={24} />
+                    {/* Search Icon for larger screens */}
+                    <div className="text-cyan-500 cursor-pointer hidden md:flex" onClick={() => setSearchActive(!searchActive)}>
+                        <FaSearch size={24} />
+                    </div>
+
+                {/* Menu Icon */}
+                <div className={"text-cyan-500 cursor-pointer md:hidden"} onClick={() => setMenuActive(!menuActive)}>
+                    {menuActive ? <FaTimes size={24} /> : <FaBars size={24} />}
                 </div>
             </nav>
 

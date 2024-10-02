@@ -2,10 +2,10 @@ import React from 'react';
 import { FaStar, FaPlay, FaPlus, FaStarHalfAlt } from 'react-icons/fa'; // Importing icons from react-icons
 import Genres from './Genres';
 
-const SelectedDetail = ({ movie }) => {
+const SelectedDetail = ({ movie, type }) => {
     const {     name, title, seasons, vote_average, genres, budget, status,
                 overview, tagline, runtime, revenue, release_date,
-                poster_path,in_production, number_of_episodes,number_of_seasons 
+                poster_path,in_production, number_of_episodes,number_of_seasons, imdb_id 
             } = movie;
 
     // Generate stars based on rating
@@ -65,9 +65,11 @@ const SelectedDetail = ({ movie }) => {
 
                     {/* Buttons */}
                     <div className="flex items-center my-4">
-                        <button className="flex items-center bg-green-300 px-4 py-2 rounded-[5px] shadow-md hover:bg-green-400 transition">
+                    <a href={`https://vidsrc.xyz/embed/${type}/${movie.id}`} target="_self" rel="noreferrer">
+                        <button className="flex items-center bg-green-300 px-4 py-2 rounded-[5px] shadow-md hover:bg-green-400 hover:px-10 hover:py-5 transition-all">
                             <FaPlay className=" ml-1 mr-1" />
                         </button>
+                    </a>
                         <button className="flex items-center bg-gray-500 px-4 py-2 rounded-[5px] shadow-md hover:bg-gray-600 transition">
                             <FaPlus className="ml-1 mr-1" />
                         </button>

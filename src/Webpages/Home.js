@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import '../App.css';
-import Navbar from '../components/Header';
 import List from '../components/List';
 import MovieCarousel from '../components/MovieCorousel';
 import { fetchHomeData, fetchMoviesData, fetchTvShowsData, fetchUpcomingData } from '../utils';
-import { useLocation } from 'react-router-dom';
 
 function App() {
   const location = useLocation();
   const { param } = location.state || {}; // Destructure param from state
-  const [activeSection, setActiveSection] = useState('Home');
+  const [activeSection, setActiveSection] = useState(param || 'Home');
   const [data, setData] = useState(null); // Initialize with null
   const [head, setHead] = useState([]);
 

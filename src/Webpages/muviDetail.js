@@ -42,23 +42,43 @@ const MuviDetail = () => {
 
                     {/* Content */}
                     <div className="relative z-10">
-                        <SelectedDetail movie={data[0]} />
+                        <SelectedDetail movie={data[0]} type={query} />
                     </div>
                 </div>
             </div>
-            {data[0].seasons?<div className="relative z-10 w-full whitespace-nowrap overflow-x-auto scrollbar-hide">
-            <h1 className='text-cyan-500 ml-2 font-serif font-extralight'>Seasons</h1>
+            {/* FOR SEASONS TO SHOW THE AVAILABLE SEASONS */}
+            {data[0].seasons?
+            <>
+            <h1 className='text-cyan-500 ml-2 font-serif font-extralight text-[5vw]'>Seasons</h1>
+            <div className="relative z-10 w-full whitespace-nowrap overflow-x-auto scrollbar-hide">
                 {data[0].seasons.map((movie) => (
                     <div
                         key={movie.id}
                         className="inline-block p-2 box-border"
                     >
-                        <MovieProfile movie={movie} />
+                        <MovieProfile movie={movie} season={true} />
                     </div>
                 ))}
             </div>
+            </>
+                
             :
             null}
+
+            <div>
+                <h1 className='text-cyan-500 ml-2 font-serif font-extralight text-[5vw]'>Cast</h1>
+                <div className="relative z-10 w-full whitespace-nowrap overflow-x-auto scrollbar-hide">
+                    {data[1].cast.map((movie) => (
+                        <div
+                            key={movie.id}
+                            className="inline-block p-2 box-border"
+                        >
+                            <MovieProfile movie={movie} />
+                        </div>
+                    ))}
+                </div>
+            </div>
+            
             
 
             <div>

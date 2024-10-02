@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-// import 'tailwindcss/tailwind.css';
 
 const List = ({ items, head }) => {
   const [showAll, setShowAll] = useState(false);
@@ -12,12 +11,17 @@ const List = ({ items, head }) => {
       <h1 className='text-left text-4xl font-extralight font-serif ml-[1vw] text-cyan-500'>{head}</h1>
       <div className="grid grid-cols-4 sm:grid-cols-6 gap-1">
         {itemsToShow.map((movie, index) => (
-          <Link to={movie.first_air_date?`/details/${'tv'}/${movie.id}`:`/details/${'movie'}/${movie.id}`} className="flex flex-col items-center" key={movie.id || index}>
-            <div key={movie.id || index} className="flex flex-col items-center">
+          <Link to={movie.first_air_date ? `/details/${'tv'}/${movie.id}` : `/details/${'movie'}/${movie.id}`} className="flex flex-col items-center" key={movie.id || index}>
+            {/* Add hover effect with smooth transition and rotation */}
+            <div 
+              key={movie.id || index} 
+              className="group flex flex-col items-center w-full h-full relative">
+              
+              {/* Movie Image with Hover Rotation */}
               <img
                 src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                 alt={movie.title}
-                className="h-[95%] w-[100%] object-cover rounded-md shadow-md shadow-black"
+                className="h-[95%] w-[95%] object-cover rounded-md shadow-md shadow-black"
               />
             </div>
           </Link>

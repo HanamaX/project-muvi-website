@@ -4,6 +4,7 @@ import Home from './Webpages/Home';
 import SearchResult from './Webpages/SearchResult';
 import Navbar from './components/Header';
 import MuviDetail from './Webpages/muviDetail';
+import Footer from './components/Footer';
 
 const App = () => {
   const homeParam = "someValue"; // Define your parameter here
@@ -18,6 +19,7 @@ const App = () => {
         <Route path="/search/:query" element={<SearchResult />} />
         <Route path='/details/:query/:zuery' element={<MuviDetail />} />
       </Routes>
+      <Footer />
     </Router>
   );
 };
