@@ -51,12 +51,16 @@ const renderStars = (rating) => {
             <FaPlus className="ml-1 mr-1" />
           </button>
         </div>
+        </div>
 
         {/* Movie Description */}
-        <p className="text-white text-sm leading-relaxed w-[85%]">
-          {overview}
-        </p>
-      </div>
+        <div className='max-w-2xl text-left'>
+          <p className="text-white text-sm leading-relaxed w-[85%]">
+            {overview}
+          </p>
+        </div>
+        
+      
     </div>
   );
 };
