@@ -35,7 +35,7 @@ const Navbar = ({ def }) => {
     return (
         <>
             {/* Navbar */}
-            <nav className=" bg-white py-1 px-8 flex justify-between items-center border-0 border-b-2 border-solid border-b-gray-100 border-opacity-30 bg-opacity-5">
+            <nav className=" bg-white py-1 px-[2vw] flex justify-between items-center border-0 border-b-2 border-solid border-b-gray-100 border-opacity-30 bg-opacity-5">
                 {/* Search Icon */}
                 <div className="text-cyan-500 cursor-pointer md:hidden" onClick={() => setSearchActive(!searchActive)}>
                     <FaSearch size={24} />

@@ -9,6 +9,14 @@ import { fetchSingleData } from '../utils';
 const MuviDetail = () => {
     const { query, zuery } = useParams();
     const [data, setData] = useState([]);
+    const [isHeightTwiceWidth, setIsHeightTwiceWidth] = useState(false);
+
+    useEffect(() => {
+        const screenWidth = window.innerWidth;
+        const screenHeight = window.innerHeight;
+        setIsHeightTwiceWidth(screenHeight >= 1.5* screenWidth);
+    } ,[])
+
     useEffect(() => {
         const getDetail = async () => {
             const data = await fetchSingleData(query, zuery);
@@ -28,11 +36,11 @@ const MuviDetail = () => {
     
 
     return (
-        <div className='w-full min-h-screen bg-gray-900'>
-            <div className='relative w-full min-h-screen '>
+        <div className='w-full  bg-gray-900'>
+            <div className='relative w-full'>
                 {/* Background image applied to parent with pseudo-element for opacity */}
                 <div
-                    className="relative w-full min-h-screen  bg-cover bg-center"
+                    className={`relative w-full ${isHeightTwiceWidth?'min-h-screen md:min-h-[50vh]':'h-screen'} bg-cover bg-center`}
                     style={{
                         backgroundImage: `url('https://image.tmdb.org/t/p/original${data[0].backdrop_path}')`,
                     }}
@@ -49,7 +57,7 @@ const MuviDetail = () => {
             {/* FOR SEASONS TO SHOW THE AVAILABLE SEASONS */}
             {data[0].seasons?
             <>
-            <h1 className='text-cyan-500 ml-2 font-serif font-extralight text-[5vw]'>Seasons</h1>
+            <h1 className='text-cyan-500 ml-2 font-serif font-extralight text-[5vw] md:text-[2vw]'>Seasons</h1>
             <div className="relative z-10 w-full whitespace-nowrap overflow-x-auto scrollbar-hide">
                 {data[0].seasons.map((movie) => (
                     <div
@@ -66,7 +74,7 @@ const MuviDetail = () => {
             null}
 
             <div>
-                <h1 className='text-cyan-500 ml-2 font-serif font-extralight text-[5vw]'>Cast</h1>
+                <h1 className='text-cyan-500 ml-2 font-serif font-extralight text-[5vw] md:text-[2vw]'>Cast</h1>
                 <div className="relative z-10 w-full whitespace-nowrap overflow-x-auto scrollbar-hide">
                     {data[1].cast.map((movie) => (
                         <div

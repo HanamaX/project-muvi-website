@@ -8,7 +8,7 @@ const List = ({ items, head }) => {
 
   return (
     <>
-      <h1 className='text-left text-4xl font-extralight font-serif ml-[1vw] text-cyan-500'>{head}</h1>
+      <h1 className='text-left md:text-[2vw] text-[5vw] font-extralight font-serif ml-[1vw] text-cyan-500'>{head}</h1>
       <div className="grid grid-cols-4 sm:grid-cols-6 gap-1">
         {itemsToShow.map((movie, index) => (
           <Link to={movie.first_air_date ? `/details/${'tv'}/${movie.id}` : `/details/${'movie'}/${movie.id}`} className="flex flex-col items-center" key={movie.id || index}>

@@ -6,7 +6,7 @@ const MovieProfile = ({ movie ,season }) => {
       <img
         src={`https://image.tmdb.org/t/p/w500${movie.poster_path || movie.profile_path}`}
         alt={movie.title}
-        className="h-[25vh] w-32 object-cover rounded-sm shadow-md shadow-black"
+        className=" w-32 object-cover rounded-sm shadow-md shadow-black"
       />
       <div className={`movie-info mt-2 `}>
         {movie.title?<h3 className="text-white text-sm text-center font-semibold">{movie.title.split(":")[0]} </h3>

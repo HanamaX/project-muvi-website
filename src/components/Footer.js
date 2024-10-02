@@ -14,8 +14,8 @@ const Footer = () => {
                         <span className="text-2xl font-bold text-white">HanamaX Website</span>
                     </div>
                     <div className='flex justify-center'>
-                    <p className='max-w-md text-center  md:text-left text-sm '>
-                    Discover the magic of cinema at HanamaX Website.com! Dive into a world of endless entertainment with our extensive collection of movies and TV shows. Join our community today and never miss out on the latest releases and exclusive content.
+                    <p className='max-w-md text-left text-sm '>
+                    Discover the magic of cinema at project-muvi-website.com! Dive into a world of endless entertainment with our extensive collection of movies and TV shows. Join our community today and never miss out on the latest releases and exclusive content.
                     </p>
                     </div>
                     
@@ -99,7 +99,7 @@ const Footer = () => {
             <hr className='opacity-15'/>
             {/* Footer Bottom */}
             <div className="mt-8 text-center text-gray-500 text-sm">
-                &copy; {new Date().getFullYear()} HanamaX Website. All rights reserved. <a href="/" className="hover:text-white text-inherit ">Terms & Conditions</a> · <a href="/" className="hover:text-white text-inherit ">Privacy Policy</a>
+                &copy; {new Date().getFullYear()} HanamaX. All rights reserved. <a href="/" className="hover:text-white text-inherit ">Terms & Conditions</a> · <a href="/" className="hover:text-white text-inherit ">Privacy Policy</a>
             </div>
         </footer>
     );

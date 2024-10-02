@@ -22,7 +22,7 @@ const renderStars = (rating) => {
 };
 
   return (
-    <div className="absolute text-white p-8 rounded-lg ml-[5vw] ">
+    <div className="relative text-white p-8 rounded-lg ml-[5vw] ">
       <div className="relative z-10 max-w-2xl text-left mt-12 " >
         {/* Title and Season */}
         {title?<h1 className="text-4xl font-bold ">{title.split(":")[0]}</h1>

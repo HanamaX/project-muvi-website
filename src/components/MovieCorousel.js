@@ -9,15 +9,16 @@ import MovieDetail from './Description';
 // Install the Autoplay module
 SwiperCore.use([Autoplay]);
 
-const MovieCarousel = ({data}) => {  
+const MovieCarousel = ({ data }) => {
   const [movies, setMovies] = useState(data);
   const [centerMovie, setCenterMovie] = useState(null);
   const [slidesPerView, setSlidesPerView] = useState(1);
+  const [isHeightTwiceWidth, setIsHeightTwiceWidth] = useState(false);
   const PROFILE_WIDTH = 130; // Width of each profile in pixels
 
-useEffect(() => {
-  setMovies(data);
-} ,[data]);
+  useEffect(() => {
+    setMovies(data);
+  }, [data]);
 
   useEffect(() => {
     const updateSlidesPerView = () => {
@@ -28,19 +29,27 @@ useEffect(() => {
       } else {
         setSlidesPerView(maxSlides);
       }
-    }
+    };
+
+    const handleResize = () => {
+      const screenWidth = window.innerWidth;
+      const screenHeight = window.innerHeight;
+      setIsHeightTwiceWidth(screenHeight >= 1.5* screenWidth);
+      updateSlidesPerView();
+    };
 
     // Initial calculation
-    updateSlidesPerView();
+    handleResize();
 
     // Update on window resize
-    window.addEventListener('resize', updateSlidesPerView);
+    window.addEventListener('resize', handleResize);
 
     // Cleanup event listener on component unmount
     return () => {
-      window.removeEventListener('resize', updateSlidesPerView);
+      window.removeEventListener('resize', handleResize);
     };
   }, [movies]);
+  
 
   const handleSlideChange = (swiper) => {
     setCenterMovie(movies[(swiper.realIndex + 1) % movies.length]);
@@ -48,50 +57,49 @@ useEffect(() => {
 
   if (centerMovie === null) {
     setCenterMovie(data[0]);
-    return null  
+    return null;
   }
 
-
   return (
-    <div className="relative h-screen flex flex-col justify-end">
+    <div className={`relative flex flex-col justify-between ${isHeightTwiceWidth ? 'min-h-screen md:min-h-[50vh]' : 'h-screen'}`}>
       {/* Background div with the current center movie's image */}
-      <div>
-        <div
-          className="absolute inset-0 z-0 bg-cover bg-center opacity-40 w-full h-full"
-          style={{ backgroundImage: `url(https://image.tmdb.org/t/p/original${centerMovie.backdrop_path})` }}
-        >
-        </div>
-        <MovieDetail movie={centerMovie} />
-
+      <div
+        className="absolute inset-0 bg-cover bg-center"
+        style={{ backgroundImage: `url(https://image.tmdb.org/t/p/original${centerMovie.backdrop_path})` }}
+      >
+        {/* Overlay for opacity */}
+        <div className="absolute inset-0 bg-gray-900 opacity-40"></div>
       </div>
-      
 
-      <div className="relative w-full h-full flex items-end">
-        <div className='relative flex items-end  w-full h-full'>
-          <Swiper
-            spaceBetween={25}
-            slidesPerView={slidesPerView}
-            loop={true}
-            autoplay={{ delay: 3000 }} // Set autoplay with a delay of 3 seconds
-            onSlideChange={handleSlideChange}
-            className="relative z-10"
-          >
-            {movies.map((movie) => (
-              <SwiperSlide key={movie.id}>
-                {movie.id === centerMovie.id 
-                ?
-                  <div className="">
-                    <MovieProfile movie={movie} centered={movie.id === centerMovie.id} />
-                  </div> 
-                :
-                  <div className='mt-6'>
-                    <MovieProfile movie={movie} centered={movie.id === centerMovie.id} />
-                  </div>
-                }
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </div>
+      {/* Content */}
+      <div className="relative z-10 flex flex-col justify-start h-full">
+        <MovieDetail movie={centerMovie} />
+      </div>
+
+      {/* Swiper */}
+      <div className="relative w-full flex items-end z-10">
+        <Swiper
+          spaceBetween={25}
+          slidesPerView={slidesPerView}
+          loop={true}
+          autoplay={{ delay: 3000 }} // Set autoplay with a delay of 3 seconds
+          onSlideChange={handleSlideChange}
+          className="relative z-10"
+        >
+          {movies.map((movie) => (
+            <SwiperSlide key={movie.id}>
+              {movie.id === centerMovie.id ? (
+                <div className="">
+                  <MovieProfile movie={movie} centered={movie.id === centerMovie.id} />
+                </div>
+              ) : (
+                <div className="mt-6">
+                  <MovieProfile movie={movie} centered={movie.id === centerMovie.id} />
+                </div>
+              )}
+            </SwiperSlide>
+          ))}
+        </Swiper>
       </div>
     </div>
   );
