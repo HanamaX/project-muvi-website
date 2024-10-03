@@ -4,7 +4,7 @@ import Logo from'../logo.svg'
 
 const Footer = () => {
     return (
-        <footer className="bg-gray-900 text-cyan-300 py-12">
+        <footer className="bg-gray-900 text-cyan-300 py-12 max-h-[70vh]">
         <hr className='opacity-15'/>
             <div className="max-w-full mx-auto px-4 sm:px-6  flex lg:flex-row flex-col lg:ml-0 lg:space-x-5">
                 {/* Logo and Description */}
@@ -21,7 +21,7 @@ const Footer = () => {
                     
 
                     {/* Social Icons */}
-                    <div className="flex justify-center space-x-6 mt-4">
+                    <div className="flex justify-center space-x-6 mt-2">
                         <a href="https://instagram.com" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
                             <FaInstagram className="text-2xl hover:text-pink-500 transition duration-300" />
                         </a>
@@ -38,15 +38,25 @@ const Footer = () => {
                 </div>
 
                 {/* Links and Contact */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 text-sm">
+                <div className="grid  -space-y-2 -mt-3 grid-cols-2 lg:grid-cols-4 text-sm">
                     {/* About Us */}
                     <div>
                         <h4 className="text-lg font-semibold text-white mb-4">About Us</h4>
                         <ul className="space-y-2">
                             <li><a href="/" className="hover:text-gray-100 transition text-inherit no-underline">Company History</a></li>
                             <li><a href="/" className="hover:text-gray-100 transition text-inherit no-underline">Meet the Team</a></li>
-                            <li><a href="/" className="hover:text-gray-100 transition text-inherit no-underline">Employee Handbook</a></li>
                             <li><a href="/" className="hover:text-gray-100 transition text-inherit no-underline">Careers</a></li>
+                        </ul>
+                    </div>
+
+                    {/* Important Links */}
+                    <div>
+                        <h4 className="text-lg font-semibold text-white mb-4">Important Links</h4>
+                        <ul className="space-y-2">
+                            <li><a href="/" className="hover:text-gray-100 transition text-inherit no-underline">Home</a></li>
+                            <li><a href="/about" className="hover:text-gray-100 transition text-inherit no-underline">Tv Shows</a></li>
+                            <li><a href="/contact" className="hover:text-gray-100 transition text-inherit no-underline">Movies</a></li>
+                            <li><a href="/terms" className="hover:text-gray-100 transition text-inherit no-underline">Upcoming</a></li>
                         </ul>
                     </div>
 
@@ -56,19 +66,7 @@ const Footer = () => {
                         <ul className="space-y-2">
                             <li><a href="/" className="hover:text-gray-100 transition text-inherit no-underline">Web Development</a></li>
                             <li><a href="/" className="hover:text-gray-100 transition text-inherit no-underline">Web Design</a></li>
-                            <li><a href="/" className="hover:text-gray-100 transition text-inherit no-underline">Marketing</a></li>
                             <li><a href="/" className="hover:text-gray-100 transition text-inherit no-underline">Google Ads</a></li>
-                        </ul>
-                    </div>
-
-                    {/* Important Links */}
-                    <div>
-                        <h4 className="text-lg font-semibold text-white mb-4">Important Links</h4>
-                        <ul className="space-y-2">
-                            <li><a href="/" className="hover:text-gray-100 transition text-inherit no-underline">Home</a></li>
-                            <li><a href="/about" className="hover:text-gray-100 transition text-inherit no-underline">About Us</a></li>
-                            <li><a href="/contact" className="hover:text-gray-100 transition text-inherit no-underline">Contact</a></li>
-                            <li><a href="/terms" className="hover:text-gray-100 transition text-inherit no-underline">Terms of Service</a></li>
                         </ul>
                     </div>
 
@@ -98,7 +96,7 @@ const Footer = () => {
             </div>
             <hr className='opacity-15'/>
             {/* Footer Bottom */}
-            <div className="mt-8 text-center text-gray-500 text-sm">
+            <div className="mt-3 -mb-5 text-center text-gray-500 text-sm">
                 &copy; {new Date().getFullYear()} HanamaX. All rights reserved. <a href="/" className="hover:text-white text-inherit ">Terms & Conditions</a> · <a href="/" className="hover:text-white text-inherit ">Privacy Policy</a>
             </div>
         </footer>

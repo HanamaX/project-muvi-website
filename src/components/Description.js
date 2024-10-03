@@ -42,14 +42,11 @@ const renderStars = (rating) => {
 
         {/* Buttons */}
         <div className="flex items-center my-4">
-        <Link to={movie.first_air_date ? `/details/${'tv'}/${movie.id}` : `/details/${'movie'}/${movie.id}`} className="flex flex-col items-center" key={movie.id }>
-          <button className="flex items-center bg-green-300 px-4 py-2 rounded-[5px] shadow-md hover:bg-green-400 hover:px-10 hover:py-5 transition-all">
-            <FaPlay className=" ml-1 mr-1" />
-          </button>
+          <Link to={movie.first_air_date ? `/details/${'tv'}/${movie.id}` : `/details/${'movie'}/${movie.id}`} className="flex flex-col items-center" key={movie.id }>
+            <button className="flex items-center bg-green-300 px-4 py-2 rounded-[5px] shadow-md hover:bg-green-400 hover:px-10 hover:py-5 transition-all">
+              <FaPlay className=" ml-1 mr-1" />
+            </button>
           </Link>
-          <button className="flex items-center bg-gray-500 px-4 py-2 rounded-[5px] shadow-md hover:bg-gray-600 transition">
-            <FaPlus className="ml-1 mr-1" />
-          </button>
         </div>
         </div>
 

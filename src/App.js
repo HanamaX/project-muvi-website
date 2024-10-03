@@ -5,10 +5,9 @@ import SearchResult from './Webpages/SearchResult';
 import Navbar from './components/Header';
 import MuviDetail from './Webpages/muviDetail';
 import Footer from './components/Footer';
+import Season from './Webpages/Season';
 
 const App = () => {
-  const homeParam = "someValue"; // Define your parameter here
-
   return (
     <Router>
       <section className="w-full z-20 fixed">
@@ -18,6 +17,8 @@ const App = () => {
         <Route path="/" element={<Home />} />
         <Route path="/search/:query" element={<SearchResult />} />
         <Route path='/details/:query/:zuery' element={<MuviDetail />} />
+        <Route path='/season/:query/:zuery' element={<Season />} />
+
       </Routes>
       <Footer />
     </Router>

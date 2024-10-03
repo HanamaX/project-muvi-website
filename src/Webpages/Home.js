@@ -56,7 +56,10 @@ function App() {
 
   // Return null if data is not yet loaded
   if (!data) {
-    return null;
+    return(
+      <div className=" absolute bg-black flex items-center justify-center h-screen w-screen z-20">
+          <div className="text-white text-lg">Loading...</div>
+      </div>)
   }
 
   return (

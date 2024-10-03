@@ -162,13 +162,13 @@ async function fetchSingleData(type, id) {
     try {
             const response1 = await axiosInstance.get(`/${type}/${id}`);
             const response2 = await axiosInstance.get(`/${type}/${id}/credits`);
-            const response3 = await axiosInstance.get(`/${type}/${id}/images`);
+            const response3 = await axiosInstance.get(`/${type}/${id}/videos`);
             const response4 = await axiosInstance.get(`/${type}/${id}/recommendations`);            
 
 
         const rData1 = response1.data;
         const rData2 = response2.data;
-        const rData3 = response3.data;
+        const rData3 = response3.data.results;
         const rData4 = response4.data.results;        
 
         if (response1.status == "200" && response2.status == "200" && response3.status == "200" && response4.status == "200") {
@@ -187,4 +187,48 @@ async function fetchSingleData(type, id) {
     }
 }
 
-export { fetchHomeData , getByName, fetchMoviesData, fetchTvShowsData, fetchUpcomingData , fetchSingleData};
+// EPISODES SECTION
+async function getEpisode(id , season) {
+    try {
+        const response = await axiosInstance.get(`/tv/${id}/season/${season}`);
+
+        const rData = response.data;
+        if (response.status == "200") {
+            return rData;
+        }
+
+    } catch (error) {
+        if (error.response) {
+            console.log('Error response data:', error.response.data);
+            
+        } else if (error.request) {
+            console.error('Error request data:', error.request);
+        } else {
+            console.error('Error message:', error.message);
+        }
+    }
+}
+
+// EPISODES SECTION
+async function getSeasonTrailer(id , season) {
+    try {
+        const response = await axiosInstance.get(`/tv/${id}/season/${season}/videos`);
+
+        const rData = response.data.results;
+        if (response.status == "200") {
+            return rData;
+        }
+
+    } catch (error) {
+        if (error.response) {
+            console.log('Error response data:', error.response.data);
+            
+        } else if (error.request) {
+            console.error('Error request data:', error.request);
+        } else {
+            console.error('Error message:', error.message);
+        }
+    }
+}
+
+export { fetchHomeData , getByName, fetchMoviesData, fetchTvShowsData, fetchUpcomingData , fetchSingleData , getEpisode ,getSeasonTrailer};

@@ -3,11 +3,13 @@ import { FaStar, FaPlay, FaPlus, FaStarHalfAlt } from 'react-icons/fa'; // Impor
 import Genres from './Genres';
 import TrailerDiv from './TrailerDiv';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
-const SelectedDetail = ({ movie, type, trailers }) => {
-    const {     name, title, seasons, vote_average, genres, budget, status,
-                overview, tagline, runtime, revenue, release_date,
-                poster_path,in_production, number_of_episodes,number_of_seasons, imdb_id 
+const SeasonDeet = ({ movie, genre, trailers ,parent }) => {
+    const {     name, season_number, vote_average,
+                overview, air_date, still_path,
+                poster_path, episode_number, id,
+                show_id, runtime, episode_type, episode_count 
             } = movie;
 
     const [showTrailer, setShowTrailer] = React.useState(false);
@@ -20,6 +22,7 @@ const SelectedDetail = ({ movie, type, trailers }) => {
         
         setIsHeightTwiceWidth(screenHeight >= 1.5* screenWidth);
     } ,[])
+    
 
 
 
@@ -38,10 +41,6 @@ const SelectedDetail = ({ movie, type, trailers }) => {
         return stars;
     };
 
-    // Format budget and revenue as currency
-    const formatCurrency = (amount) => {
-        return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(amount);
-    };
 
     // Convert runtime from minutes to hours and minutes
     const formatRuntime = (minutes) => {
@@ -57,17 +56,17 @@ const SelectedDetail = ({ movie, type, trailers }) => {
                 <div className="mr-8 md:flex hidden ">
                     <img
                         className="w-40 h-60 object-cover rounded-lg"
-                        src={`https://image.tmdb.org/t/p/original${poster_path}`}
-                        alt={title}
+                        src={`https://image.tmdb.org/t/p/original${poster_path || still_path}`}
+                        alt={parent.name}
                     />
                 </div>
 
                 {/* Movie Details */}
                 <div>
                     {/* Title and Season */}
-                    {title ? <h1 className="text-4xl font-bold ">{title}</h1>
-                        : <h1 className="text-4xl font-bold ">{name}</h1>
-                    }
+                    <h1 className="text-4xl font-bold ">{parent.name}</h1>
+                    <h1 className="text-xl font-bold ">{name}</h1>
+                    
 
                     {/* Ratings */}
                     <div className="flex items-center space-x-2">
@@ -76,17 +75,23 @@ const SelectedDetail = ({ movie, type, trailers }) => {
                     </div>
 
                     {/* Genres */}
-                    <Genres genre={genres} />
+                    {poster_path && <Genres genre={genre} />}
 
                     {/* Buttons */}
                     <div className="flex items-center my-4">
-                    {!seasons &&
-                        <button className={`flex items-center bg-green-300 px-4 py-2 rounded-[5px]  shadow-md hover:bg-green-400 transition-all ${showMuvi ? 'px-10 py-5' : 'hover:px-10 hover:py-5'}`}
-                                onClick={()=>{setShowTrailer(false) ;setShowMuvi(!showMuvi) }}>
-                                <FaPlay className=" ml-1 mr-1" />
+                    {poster_path ?
+                    <Link to={`/season/${parent.id}/${season_number}`} state={{param:parent}}>
+                        <button className={`flex items-center bg-green-300 px-4 py-2 rounded-[5px]  shadow-md hover:bg-green-400 transition-all ${showMuvi ? 'px-10 py-5' : 'hover:px-10 hover:py-5'}`}>
+                            <FaPlay className=" ml-1 mr-1" />
                         </button>
+                    </Link>
+                    :
+                    <button className={`flex items-center bg-green-300 px-4 py-2 rounded-[5px]  shadow-md hover:bg-green-400 transition-all ${showMuvi ? 'px-10 py-5' : 'hover:px-10 hover:py-5'}`}
+                            onClick={()=>{setShowTrailer(false) ;setShowMuvi(!showMuvi) }}>
+                            <FaPlay className=" ml-1 mr-1" />
+                    </button>
                     }
-                        <button className={`flex items-center bg-gray-500 px-4 py-2 rounded-[5px]  shadow-md hover:bg-gray-600 transition-all ${showTrailer ? 'px-10 py-5' : 'hover:px-10 hover:py-5'}`}
+                        <button className={`flex items-center bg-gray-500 px-4 py-2 rounded-[5px]  shadow-md hover:bg-gray-600 transition-all ${trailers?'':'hidden'} ${showTrailer ? 'px-10 py-5' : 'hover:px-10 hover:py-5'}`}
                             onClick={()=>{ setShowMuvi(false) ;setShowTrailer(!showTrailer) }}>
                             <FaPlus className="ml-1 mr-1" />
                         </button>
@@ -104,7 +109,7 @@ const SelectedDetail = ({ movie, type, trailers }) => {
                             <div className='absolute top-0   h-full w-full'>
                                 <iframe
                                 className={`relative w-full  rounded-lg h-[40vh] md:w-[60vw] md:h-[50vh] ${isHeightTwiceWidth? 'md:h-[30vh]' :''} `}
-                                    src={`https://vidsrc.xyz/embed/${type}/${movie.id}`}
+                                    src={`https://vidsrc.xyz/embed/tv/${parent.id}/${season_number}-${episode_number}`}
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                     allowFullScreen
                                     title="Movie Trailer"
@@ -115,21 +120,18 @@ const SelectedDetail = ({ movie, type, trailers }) => {
 
 
                     <div className='space-y-0.5'>
-                        <p className='-mb-0.5'><span className='text-cyan-500'>Tagline:</span> {tagline}</p>
+                        <p className='-mb-0.5'><span className='text-cyan-500'>Season no:</span> {season_number}</p>
                         
-                        {!seasons ?
+                        {episode_number ?
                         <>
-                            <p><span className='text-cyan-500'>Status:</span> {status}</p>          
-                            <p><span className='text-cyan-500'>Budget:</span> {formatCurrency(budget)}</p>
-                            <p><span className='text-cyan-500'>Runtime:</span> {formatRuntime(runtime)}</p>
-                            <p><span className='text-cyan-500'>Revenue:</span> {formatCurrency(revenue)}</p>
-                            <p><span className='text-cyan-500'>Release Date:</span> {release_date}</p>
+                            <p><span className='text-cyan-500'>Episode no:</span> {episode_number}</p>          
+                            <p><span className='text-cyan-500'>Episode Type:</span> {episode_type}</p>
+                            <p><span className='text-cyan-500'>Release Date:</span> {air_date}</p>
                         </>
                         :
                         <>
-                            <p><span className='text-cyan-500'>Status:</span> {in_production?'Ongoing':'Finished'}</p>
-                            <p><span className='text-cyan-500'>No. of Seasons:</span> {number_of_seasons}</p>
-                            <p><span className='text-cyan-500'>No. of Episodes:</span> {number_of_episodes}</p>
+                            <p><span className='text-cyan-500'>No. of Episodes:</span> {episode_count}</p>
+                            <p><span className='text-cyan-500'>Release Date:</span> {air_date}</p>
                         </>}
                     </div>
                     
@@ -149,4 +151,4 @@ const SelectedDetail = ({ movie, type, trailers }) => {
     );
 };
 
-export default SelectedDetail;
+export default SeasonDeet;
