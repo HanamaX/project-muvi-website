@@ -4,7 +4,7 @@ import Logo from'../logo.svg'
 
 const Footer = () => {
     return (
-        <footer className="bg-gray-900 text-cyan-300 py-12 max-h-[70vh]">
+        <footer className="bg-gray-900 text-cyan-300 py-12 ">
         <hr className='opacity-15'/>
             <div className="max-w-full mx-auto px-4 sm:px-6  flex lg:flex-row flex-col lg:ml-0 lg:space-x-5">
                 {/* Logo and Description */}
@@ -38,7 +38,7 @@ const Footer = () => {
                 </div>
 
                 {/* Links and Contact */}
-                <div className="grid  -space-y-2 -mt-3 grid-cols-2 lg:grid-cols-4 text-sm">
+                <div className="grid  -mt-3 grid-cols-2 lg:grid-cols-4 text-sm">
                     {/* About Us */}
                     <div>
                         <h4 className="text-lg font-semibold text-white mb-4">About Us</h4>

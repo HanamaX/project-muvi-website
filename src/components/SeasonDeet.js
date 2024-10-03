@@ -80,18 +80,18 @@ const SeasonDeet = ({ movie, genre, trailers ,parent }) => {
                     {/* Buttons */}
                     <div className="flex items-center my-4">
                     {poster_path ?
-                    <Link to={`/season/${parent.id}/${season_number}`} state={{param:parent}}>
-                        <button className={`flex items-center bg-green-300 px-4 py-2 rounded-[5px]  shadow-md hover:bg-green-400 transition-all ${showMuvi ? 'px-10 py-5' : 'hover:px-10 hover:py-5'}`}>
-                            <FaPlay className=" ml-1 mr-1" />
-                        </button>
-                    </Link>
+                        <Link to={`/season/${parent.id}/${season_number}`} state={{param:parent}}>
+                            <button className={`flex items-center bg-green-300 px-4 py-2 rounded-[5px]  shadow-md hover:bg-green-400 transition-all hover:px-10 hover:py-5`}>
+                                <FaPlay className=" ml-1 mr-1" />
+                            </button>
+                        </Link>
                     :
-                    <button className={`flex items-center bg-green-300 px-4 py-2 rounded-[5px]  shadow-md hover:bg-green-400 transition-all ${showMuvi ? 'px-10 py-5' : 'hover:px-10 hover:py-5'}`}
-                            onClick={()=>{setShowTrailer(false) ;setShowMuvi(!showMuvi) }}>
-                            <FaPlay className=" ml-1 mr-1" />
-                    </button>
+                        <button className={`flex items-center bg-green-300 px-4 py-2 rounded-[5px]  shadow-md hover:bg-green-400 transition-all ${showMuvi ? ' px-11 py-5' : 'hover:px-10 hover:py-5'}`}
+                                onClick={()=>{setShowTrailer(false) ;setShowMuvi(!showMuvi) }}>
+                                <FaPlay className=" ml-1 mr-1" />
+                        </button>
                     }
-                        <button className={`flex items-center bg-gray-500 px-4 py-2 rounded-[5px]  shadow-md hover:bg-gray-600 transition-all ${trailers?'':'hidden'} ${showTrailer ? 'px-10 py-5' : 'hover:px-10 hover:py-5'}`}
+                        <button className={`flex items-center bg-gray-500 px-4 py-2 rounded-[5px]  shadow-md hover:bg-gray-600 transition-all ${trailers?'':'hidden'} ${showTrailer ? 'px-11 py-5' : 'hover:px-10 hover:py-5'}`}
                             onClick={()=>{ setShowMuvi(false) ;setShowTrailer(!showTrailer) }}>
                             <FaPlus className="ml-1 mr-1" />
                         </button>

@@ -23,7 +23,7 @@ const TrailerDiv = ({ trailers }) => {
 
     return (
         <div className='relative'>
-        <div className={`min-h-[30vh] overflow-y-scroll shadow-md shadow-black  bg-gray-900 rounded-md relative scrollbar-hide ${isHeightTwiceWidth? 'md:min-h-[10vh]' :''} ${showTrailer? 'hidden':''}`}>
+        <div className={`h-[30vh] overflow-y-scroll shadow-md shadow-black  bg-gray-900 rounded-md relative scrollbar-hide ${isHeightTwiceWidth? 'md:h-[10vh]' :''} ${showTrailer? 'hidden':''}`}>
         <h3 className='text-cyan-500 text-md font-bold text-center  -mb-[1vh]  '>Trailers</h3>
             {trailers.map((trailer, index) => (
                 <div 

@@ -20,6 +20,7 @@ function App() {
       // Reset param after using it
       location.state = null;
     }
+    window.scrollTo(0, 0);
   }, [param, location]);
   
 

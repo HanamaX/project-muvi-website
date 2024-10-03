@@ -105,7 +105,7 @@ const MuviDetail = () => {
                     {data[0].seasons.map((movie) => (
                         <div
                             key={movie.id}
-                            className="inline-block p-2 box-border"
+                            className="inline-block p-2 box-border cursor-pointer"
                             onClick={() => { handleSetSeason(movie) }}
                         >
                             <MovieProfile movie={movie} season={true} />

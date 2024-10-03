@@ -84,7 +84,7 @@ const Navbar = ({ def }) => {
                         type="text"
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="px-4 py-2 border-0 border-b-[1px]  border-gray-300 bg-black bg-opacity-40 rounded-sm bg-transparent text-white"
+                        className="px-4 py-2 border-0 border-b-[1px]  border-gray-300 bg-black bg-opacity-65  rounded-sm  text-white"
                         placeholder="Search for a movie/series"
                     />
                     <Link to={`/search/${searchQuery}`}  >
