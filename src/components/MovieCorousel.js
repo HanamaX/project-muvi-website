@@ -82,9 +82,9 @@ const MovieCarousel = ({ data }) => {
           spaceBetween={25}
           slidesPerView={slidesPerView}
           loop={true}
-          autoplay={{ delay: 3000 }} // Set autoplay with a delay of 3 seconds
+          autoplay={{delay: 3000}} // Set autoplay with a delay of 3 seconds
           onSlideChange={handleSlideChange}
-          className="relative z-10"
+          className="relative z-20"
         >
           {movies.map((movie) => (
             <SwiperSlide key={movie.id}>

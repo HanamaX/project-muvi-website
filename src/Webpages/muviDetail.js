@@ -6,6 +6,7 @@ import MovieProfile from '../components/MovieProfile';
 import SelectedDetail from '../components/SingleDescription';
 import { fetchSingleData, getSeasonTrailer } from '../utils';
 import SeasonDeet from '../components/SeasonDeet';
+import LoadingSpinner from '../components/Spinner';
 
 const MuviDetail = () => {
     const { query, zuery } = useParams();
@@ -18,7 +19,6 @@ const MuviDetail = () => {
     const handleSetSeason = async (movie) =>{
         if(seasonData === movie){
             setShowSeason(!showSeason);
-            window.scrollTo(0, 0);
         }
         else{
         const dataz = await getSeasonTrailer(data[0].id ,movie.season_number)
@@ -26,6 +26,7 @@ const MuviDetail = () => {
         setSeasonData(movie); 
         setShowSeason(true);
         }
+        window.scrollTo(0, 0);
     }
 
     useEffect(() => {
@@ -52,10 +53,11 @@ const MuviDetail = () => {
 
     if (!data[0]) {
         return(
-            <div className=" absolute bg-black flex items-center justify-center h-screen w-screen z-20">
-                <div className="text-white text-lg">Loading...</div>
+            <div className=" fixed bg-slate-950 flex items-center justify-center h-screen scrollbar-hide w-screen z-20">
+                <LoadingSpinner />
             </div>)
                 }
+
     
     
 

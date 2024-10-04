@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import 'swiper/swiper-bundle.css'; // Import Swiper styles
-import List from '../components/List';
 import MovieProfile from '../components/MovieProfile';
-import SelectedDetail from '../components/SingleDescription';
-import { getEpisode } from '../utils';
 import SeasonDeet from '../components/SeasonDeet';
-import { useLocation } from 'react-router-dom';
+import LoadingSpinner from '../components/Spinner';
+import { getEpisode } from '../utils';
+import List from '../components/List';
 
 const Season = () => {
     const location = useLocation();
@@ -40,11 +39,15 @@ const Season = () => {
 
     // Return null if no data is available
     if (!data[0]) {
-        return(
-            <div className=" absolute bg-black flex items-center justify-center h-screen w-screen z-20">
-                <div className="text-white text-lg">Loading...</div>
-            </div>)
+            return(
+                <div className=" fixed bg-slate-950 flex items-center justify-center h-screen scrollbar-hide w-screen z-20">
+                    <LoadingSpinner />
+                </div>)
+
     }
+    
+    console.log(data[centre]);
+    
 
     return (
         <div className='w-full bg-gray-900'>
@@ -98,9 +101,9 @@ const Season = () => {
             </div>
 
             {/* Uncomment this section if you want to show a list of recommended items */}
-            {/* <div>
-                <List items={data[3]} head={`${head} You might Like`} />
-            </div> */}
+            <div>
+                <List items={param.seasons} head={`Seasons`} parent={param} />
+            </div>
         </div>
     );
 };

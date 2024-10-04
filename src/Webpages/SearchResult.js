@@ -1,8 +1,8 @@
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import '../App.css';
 import List from '../components/List';
-import { useParams } from 'react-router-dom';
 import { getByName } from '../utils';
-import { useEffect, useState } from 'react';
 
 function SearchResult() {
   const { query } = useParams();
@@ -27,6 +27,7 @@ function SearchResult() {
       setFilteredData(data.filter(item => item.media_type === mediaType));
     }
   }, [mediaType, data]);
+  
 
   return (
     <div className="App bg-gray-900 text-white relative min-h-screen h-full">

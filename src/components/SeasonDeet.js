@@ -22,6 +22,8 @@ const SeasonDeet = ({ movie, genre, trailers ,parent }) => {
         
         setIsHeightTwiceWidth(screenHeight >= 1.5* screenWidth);
     } ,[])
+
+    
     
 
 
@@ -108,7 +110,7 @@ const SeasonDeet = ({ movie, genre, trailers ,parent }) => {
                         <div className='relative'>
                             <div className='absolute top-0   h-full w-full'>
                                 <iframe
-                                className={`relative w-full  rounded-lg h-[40vh] md:w-[60vw] md:h-[50vh] ${isHeightTwiceWidth? 'md:h-[30vh]' :''} `}
+                                className={`relative w-full  rounded-lg h-[40vh] md:w-[60vw]  ${isHeightTwiceWidth? 'md:h-[30vh]' :'md:h-[45vh]'} `}
                                     src={`https://vidsrc.xyz/embed/tv/${parent.id}/${season_number}-${episode_number}`}
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                     allowFullScreen
@@ -141,7 +143,7 @@ const SeasonDeet = ({ movie, genre, trailers ,parent }) => {
                     <div className=' -space-y-2'>
                     <p className=' text-cyan-500'>Overview</p>
                     <p className="text-white text-sm leading-relaxed w-[100%]">
-                        {overview}
+                        {overview? overview: parent.overview}
                     </p>
                     </div>
                     

@@ -4,6 +4,7 @@ import '../App.css';
 import List from '../components/List';
 import MovieCarousel from '../components/MovieCorousel';
 import { fetchHomeData, fetchMoviesData, fetchTvShowsData, fetchUpcomingData } from '../utils';
+import LoadingSpinner from '../components/Spinner';
 
 function App() {
   const location = useLocation();
@@ -58,8 +59,8 @@ function App() {
   // Return null if data is not yet loaded
   if (!data) {
     return(
-      <div className=" absolute bg-black flex items-center justify-center h-screen w-screen z-20">
-          <div className="text-white text-lg">Loading...</div>
+      <div className=" fixed bg-slate-950 flex items-center justify-center h-screen scrollbar-hide w-screen z-20">
+          <LoadingSpinner />
       </div>)
   }
 

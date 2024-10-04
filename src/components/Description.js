@@ -51,7 +51,7 @@ const renderStars = (rating) => {
         </div>
 
         {/* Movie Description */}
-        <div className='max-w-2xl text-left'>
+        <div className='max-w-2xl text-left absolute'>
           <p className="text-white text-sm leading-relaxed w-[85%]">
             {overview}
           </p>

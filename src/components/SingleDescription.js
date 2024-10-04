@@ -103,7 +103,7 @@ const SelectedDetail = ({ movie, type, trailers }) => {
                         <div className='relative'>
                             <div className='absolute top-0   h-full w-full'>
                                 <iframe
-                                className={`relative w-full  rounded-lg h-[40vh] md:w-[60vw] md:h-[50vh] ${isHeightTwiceWidth? 'md:h-[30vh]' :''} `}
+                                className={`relative w-full  rounded-lg h-[40vh] md:w-[60vw]  ${isHeightTwiceWidth? 'md:h-[30vh]' :'md:h-[40vh]'} `}
                                     src={`https://vidsrc.xyz/embed/${type}/${movie.id}`}
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                     allowFullScreen
