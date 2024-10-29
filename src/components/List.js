@@ -37,7 +37,7 @@ const List = ({ items, head , parent }) => {
       </div>
       <button
         onClick={() => setShowAll(!showAll)}
-        className="mt-1 px-4 py-2 bg-blue-500 text-white rounded-md absolute right-0"
+        className="mt-1 px-4 py-2 bg-cyan-500 text-white rounded-md absolute right-[2vw]"
       >
         {showAll ? 'Less' : 'More'}
       </button>

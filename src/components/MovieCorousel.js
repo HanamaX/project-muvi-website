@@ -14,7 +14,9 @@ const MovieCarousel = ({ data }) => {
   const [centerMovie, setCenterMovie] = useState(null);
   const [slidesPerView, setSlidesPerView] = useState(1);
   const [isHeightTwiceWidth, setIsHeightTwiceWidth] = useState(false);
-  const PROFILE_WIDTH = 130; // Width of each profile in pixels
+  const [backgroundImage, setBackgroundImage] = useState(null);
+  const [isFading, setIsFading] = useState(false); // Track fade effect
+  const PROFILE_WIDTH = 130;
 
   useEffect(() => {
     setMovies(data);
@@ -38,6 +40,7 @@ const MovieCarousel = ({ data }) => {
       updateSlidesPerView();
     };
 
+
     // Initial calculation
     handleResize();
 
@@ -52,8 +55,15 @@ const MovieCarousel = ({ data }) => {
   
 
   const handleSlideChange = (swiper) => {
-    setCenterMovie(movies[(swiper.realIndex + 1) % movies.length]);
+    const newCenterMovie = movies[(swiper.realIndex + 1) % movies.length];
+    setIsFading(true); // Start fade effect
+    setTimeout(() => {
+      setCenterMovie(newCenterMovie);
+      setBackgroundImage(`url(https://image.tmdb.org/t/p/original${newCenterMovie.backdrop_path})`);
+      setIsFading(false); // End fade effect
+    }, 300); // Delay for fade effect timing
   };
+
 
   if (centerMovie === null) {
     setCenterMovie(data[0]);
@@ -64,8 +74,8 @@ const MovieCarousel = ({ data }) => {
     <div className={`relative flex flex-col justify-between ${isHeightTwiceWidth ? 'min-h-screen md:min-h-[50vh]' : 'h-screen'}`}>
       {/* Background div with the current center movie's image */}
       <div
-        className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: `url(https://image.tmdb.org/t/p/original${centerMovie.backdrop_path})` }}
+        className={`absolute inset-0 bg-cover bg-center transition-opacity duration-500 ${isFading ? 'opacity-0' : 'opacity-100'}`}
+        style={{ backgroundImage: backgroundImage }}
       >
         {/* Overlay for opacity */}
         <div className="absolute inset-0 bg-gray-900 opacity-40"></div>

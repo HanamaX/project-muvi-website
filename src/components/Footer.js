@@ -23,16 +23,16 @@ const Footer = () => {
                     {/* Social Icons */}
                     <div className="flex justify-center space-x-6 mt-2">
                         <a href="https://instagram.com" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
-                            <FaInstagram className="text-2xl hover:text-pink-500 transition duration-300" />
+                            <FaInstagram className="text-2xl text-gray-600 hover:text-pink-500 transition duration-300" />
                         </a>
                         <a href="https://facebook.com" aria-label="Facebook" target="_blank" rel="noopener noreferrer">
-                            <FaFacebook className="text-2xl hover:text-blue-500 transition duration-300" />
+                            <FaFacebook className="text-2xl text-gray-600 hover:text-blue-500 transition duration-300" />
                         </a>
                         <a href="https://twitter.com" aria-label="Twitter" target="_blank" rel="noopener noreferrer">
-                            <FaTwitter className="text-2xl hover:text-blue-400 transition duration-300" />
+                            <FaTwitter className="text-2xl text-gray-600 hover:text-blue-400 transition duration-300" />
                         </a>
                         <a href="https://github.com" aria-label="GitHub" target="_blank" rel="noopener noreferrer">
-                            <FaGithub className="text-2xl hover:text-gray-500 transition duration-300" />
+                            <FaGithub className="text-2xl text-gray-600 hover:text-purple-600 transition duration-300" />
                         </a>
                     </div>
                 </div>
@@ -42,7 +42,7 @@ const Footer = () => {
                     {/* About Us */}
                     <div>
                         <h4 className="text-lg font-semibold text-white mb-4">About Us</h4>
-                        <ul className="space-y-2">
+                        <ul className="space-y-2 list-none">
                             <li><a href="/" className="hover:text-gray-100 transition text-inherit no-underline">Company History</a></li>
                             <li><a href="/" className="hover:text-gray-100 transition text-inherit no-underline">Meet the Team</a></li>
                             <li><a href="/" className="hover:text-gray-100 transition text-inherit no-underline">Careers</a></li>
@@ -52,7 +52,7 @@ const Footer = () => {
                     {/* Important Links */}
                     <div>
                         <h4 className="text-lg font-semibold text-white mb-4">Important Links</h4>
-                        <ul className="space-y-2">
+                        <ul className="space-y-2 list-none">
                             <li><a href="/" className="hover:text-gray-100 transition text-inherit no-underline">Home</a></li>
                             <li><a href="/about" className="hover:text-gray-100 transition text-inherit no-underline">Tv Shows</a></li>
                             <li><a href="/contact" className="hover:text-gray-100 transition text-inherit no-underline">Movies</a></li>
@@ -63,7 +63,7 @@ const Footer = () => {
                     {/* Our Services */}
                     <div>
                         <h4 className="text-lg font-semibold text-white mb-4">Our Services</h4>
-                        <ul className="space-y-2">
+                        <ul className="space-y-2 list-none">
                             <li><a href="/" className="hover:text-gray-100 transition text-inherit no-underline">Web Development</a></li>
                             <li><a href="/" className="hover:text-gray-100 transition text-inherit no-underline">Web Design</a></li>
                             <li><a href="/" className="hover:text-gray-100 transition text-inherit no-underline">Google Ads</a></li>
@@ -77,18 +77,18 @@ const Footer = () => {
                             <li className="flex items-center">
                                 <FaEnvelope className="mr-2" />
                                 <a href="#" className="hover:text-gray-100 transition text-inherit no-underline break-all">
-                                    support@hanamaxwebsite.com
+                                    email
                                 </a>
                             </li>
                             <li className="flex items-center">
                                 <FaPhone className="mr-2" />
-                                <a href="tel:+1234567890" className="hover:text-gray-100 transition text-inherit no-underline">
-                                    +255 717 459 730
+                                <a href="#" className="hover:text-gray-100 transition text-inherit no-underline">
+                                    contact
                                 </a>
                             </li>
                             <li className="flex items-center hover:text-gray-100 transition text-inherit no-underline">
                                 <FaMapMarkerAlt className="mr-2" />
-                                Dodoma , Tanzania
+                                Location
                             </li>
                         </ul>
                     </div>

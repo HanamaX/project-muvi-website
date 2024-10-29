@@ -1,9 +1,10 @@
-import React from 'react';
-import { FaStar, FaPlay, FaPlus, FaStarHalfAlt } from 'react-icons/fa'; // Importing icons from react-icons
+import React, { useEffect, useState } from 'react';
+import { BiMoviePlay } from "react-icons/bi";
+import { FaStar, FaStarHalfAlt } from 'react-icons/fa'; // Importing icons from react-icons
+import { PiVideoThin } from "react-icons/pi";
+import { Link } from 'react-router-dom';
 import Genres from './Genres';
 import TrailerDiv from './TrailerDiv';
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 
 const SeasonDeet = ({ movie, genre, trailers ,parent }) => {
     const {     name, season_number, vote_average,
@@ -82,20 +83,29 @@ const SeasonDeet = ({ movie, genre, trailers ,parent }) => {
                     {/* Buttons */}
                     <div className="flex items-center my-4">
                     {poster_path ?
-                        <Link to={`/season/${parent.id}/${season_number}`} state={{param:parent}}>
+                        <Link to={`/season/${parent.id}/${season_number}`} state={{param:parent}} className='no-underline'>
                             <button className={`flex items-center bg-green-300 px-4 py-2 rounded-[5px]  shadow-md hover:bg-green-400 transition-all hover:px-10 hover:py-5`}>
-                                <FaPlay className=" ml-1 mr-1" />
+                            <div className='flex items-center flex-col'>
+                                    <PiVideoThin size={25} className=" ml-1 mr-1" />
+                                    <span>Watch Now</span>
+                                </div> 
                             </button>
                         </Link>
                     :
                         <button className={`flex items-center bg-green-300 px-4 py-2 rounded-[5px]  shadow-md hover:bg-green-400 transition-all ${showMuvi ? ' px-11 py-5' : 'hover:px-10 hover:py-5'}`}
                                 onClick={()=>{setShowTrailer(false) ;setShowMuvi(!showMuvi) }}>
-                                <FaPlay className=" ml-1 mr-1" />
+                                <div className='flex items-center flex-col'>
+                                    <PiVideoThin size={25} className=" ml-1 mr-1" />
+                                    <span>Watch Now</span>
+                                </div> 
                         </button>
                     }
                         <button className={`flex items-center bg-gray-500 px-4 py-2 rounded-[5px]  shadow-md hover:bg-gray-600 transition-all ${trailers?'':'hidden'} ${showTrailer ? 'px-11 py-5' : 'hover:px-10 hover:py-5'}`}
                             onClick={()=>{ setShowMuvi(false) ;setShowTrailer(!showTrailer) }}>
-                            <FaPlus className="ml-1 mr-1" />
+                            <div className='flex items-center flex-col'>
+                                <BiMoviePlay size={25} className="ml-1 mr-1" />
+                                <span> Watch Trailer</span>
+                            </div>
                         </button>
                     </div>
                     

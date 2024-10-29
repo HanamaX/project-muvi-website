@@ -1,8 +1,11 @@
-import React from 'react';
-import { FaStar, FaPlay, FaPlus, FaStarHalfAlt } from 'react-icons/fa'; // Importing icons from react-icons
+import React, { useEffect, useState } from 'react';
+import { BiMoviePlay } from "react-icons/bi";
+import { FaStar, FaStarHalfAlt } from 'react-icons/fa'; // Importing icons from react-icons
+import { PiVideoThin } from "react-icons/pi";
 import Genres from './Genres';
 import TrailerDiv from './TrailerDiv';
-import { useEffect, useState } from 'react';
+import Tooltip from './ToolTip'; // You can use any tooltip library or create your own
+
 
 const SelectedDetail = ({ movie, type, trailers }) => {
     const {     name, title, seasons, vote_average, genres, budget, status,
@@ -80,15 +83,35 @@ const SelectedDetail = ({ movie, type, trailers }) => {
 
                     {/* Buttons */}
                     <div className="flex items-center my-4">
-                    {!seasons &&
-                        <button className={`flex items-center bg-green-300 px-4 py-2 rounded-[5px]  shadow-md hover:bg-green-400 transition-all ${showMuvi ? 'px-11 py-5' : 'hover:px-10 hover:py-5'}`}
-                                onClick={()=>{setShowTrailer(false) ;setShowMuvi(!showMuvi) }}>
-                                <FaPlay className=" ml-1 mr-1" />
+                    {!seasons ? (
+                        <button
+                            className={`flex items-center bg-green-300 px-3 py-1 rounded-[5px] shadow-md hover:bg-green-400 transition-all ${showMuvi ? 'px-11 py-5' : 'hover:px-10 hover:py-5'}`}
+                            onClick={() => { setShowTrailer(false); setShowMuvi(!showMuvi); }}
+                        >
+                            <div className='flex items-center flex-col'>
+                                <PiVideoThin size={25} className="ml-1 mr-1" />
+                                <span>Watch Now</span>
+                            </div>
                         </button>
-                    }
-                        <button className={`flex items-center bg-gray-500 px-4 py-2 rounded-[5px]  shadow-md hover:bg-gray-600 transition-all ${showTrailer ? 'px-11 py-5' : 'hover:px-10 hover:py-5'}`}
+                        ) : (
+                        <Tooltip content="Select a season to watch">
+                            <button
+                                className="flex items-center bg-green-300 px-3 py-1 rounded-[5px] shadow-md transition-all cursor-not-allowed"
+                                disabled
+                            >
+                                <div className='flex items-center flex-col'>
+                                    <PiVideoThin size={25} className="ml-1 mr-1" />
+                                    <span>Watch Now</span>
+                                </div>
+                            </button>
+                        </Tooltip>
+                    )}
+                        <button className={`flex items-center bg-gray-500 px-3 py-1 rounded-[5px]  shadow-md hover:bg-gray-600 transition-all ${showTrailer ? 'px-11 py-5' : 'hover:px-10 hover:py-5'}`}
                             onClick={()=>{ setShowMuvi(false) ;setShowTrailer(!showTrailer) }}>
-                            <FaPlus className="ml-1 mr-1" />
+                            <div className='flex items-center flex-col'>
+                                <BiMoviePlay size={25} className="ml-1 mr-1" />
+                                <span> Watch Trailer</span>
+                            </div>
                         </button>
                     </div>
                     
