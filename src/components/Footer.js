@@ -77,13 +77,13 @@ const Footer = () => {
                             <li className="flex items-center">
                                 <FaEnvelope className="mr-2" />
                                 <a href="#" className="hover:text-gray-100 transition text-inherit no-underline break-all">
-                                    email
+                                    Email
                                 </a>
                             </li>
                             <li className="flex items-center">
                                 <FaPhone className="mr-2" />
                                 <a href="#" className="hover:text-gray-100 transition text-inherit no-underline">
-                                    contact
+                                    Contact
                                 </a>
                             </li>
                             <li className="flex items-center hover:text-gray-100 transition text-inherit no-underline">
