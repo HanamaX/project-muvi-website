@@ -5,6 +5,7 @@ import List from '../components/List';
 import MovieCarousel from '../components/MovieCorousel';
 import { fetchHomeData, fetchMoviesData, fetchTvShowsData, fetchUpcomingData } from '../utils';
 import LoadingSpinner from '../components/Spinner';
+import ReactGA from 'react-ga';
 
 function App() {
   const location = useLocation();
@@ -13,7 +14,10 @@ function App() {
   const [data, setData] = useState(null); // Initialize with null
   const [head, setHead] = useState([]);
 
-  
+   // Initialize Google Analytics
+  useEffect(() => {
+    ReactGA.pageview(window.location.pathname + window.location.search);
+  }, []);
 
   useEffect(() => {
     if (param) {
