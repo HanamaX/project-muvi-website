@@ -6,6 +6,11 @@ import Navbar from './components/Header';
 import MuviDetail from './Webpages/muviDetail';
 import Footer from './components/Footer';
 import Season from './Webpages/Season';
+import ReactGA from 'react-ga';
+
+// Initialize Google Analytics
+ReactGA.initialize('G-BYXPBWEF1T');
+ReactGA.pageview(window.location.pathname + window.location.search);
 
 const App = () => {
   return (
