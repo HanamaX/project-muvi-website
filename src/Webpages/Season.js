@@ -6,6 +6,8 @@ import SeasonDeet from '../components/SeasonDeet';
 import LoadingSpinner from '../components/Spinner';
 import { getEpisode } from '../utils';
 import List from '../components/List';
+import ReactGA from 'react-ga';
+
 
 const Season = () => {
     const location = useLocation();
@@ -14,6 +16,11 @@ const Season = () => {
     const [data, setData] = useState([]);
     const [isHeightTwiceWidth, setIsHeightTwiceWidth] = useState(false);
     const [centre, setCentre] = useState(0);
+
+       // Initialize Google Analytics
+      useEffect(() => {
+        ReactGA.pageview(window.location.pathname);
+      }, []);
 
     // Check if the screen height is at least 1.5 times the screen width
     useEffect(() => {

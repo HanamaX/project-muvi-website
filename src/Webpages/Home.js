@@ -16,8 +16,10 @@ function App() {
 
    // Initialize Google Analytics
   useEffect(() => {
-    ReactGA.pageview(window.location.pathname + window.location.search);
+    ReactGA.pageview(window.location.pathname);
   }, []);
+
+
 
   useEffect(() => {
     if (param) {

@@ -3,12 +3,19 @@ import { useParams } from 'react-router-dom';
 import '../App.css';
 import List from '../components/List';
 import { getByName } from '../utils';
+import ReactGA from 'react-ga';
+
 
 function SearchResult() {
   const { query } = useParams();
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
   const [mediaType, setMediaType] = useState('all'); // State for selected media type
+
+     // Initialize Google Analytics
+    useEffect(() => {
+      ReactGA.pageview(window.location.pathname);
+    }, []);
 
   useEffect(() => {
     const search = async () => {

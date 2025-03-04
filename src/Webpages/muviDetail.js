@@ -7,6 +7,8 @@ import SelectedDetail from '../components/SingleDescription';
 import { fetchSingleData, getSeasonTrailer } from '../utils';
 import SeasonDeet from '../components/SeasonDeet';
 import LoadingSpinner from '../components/Spinner';
+import ReactGA from 'react-ga';
+
 
 const MuviDetail = () => {
     const { query, zuery } = useParams();
@@ -28,6 +30,11 @@ const MuviDetail = () => {
         }
         window.scrollTo(0, 0);
     }
+
+       // Initialize Google Analytics
+      useEffect(() => {
+        ReactGA.pageview(window.location.pathname);
+      }, []);
 
     useEffect(() => {
         const screenWidth = window.innerWidth;
