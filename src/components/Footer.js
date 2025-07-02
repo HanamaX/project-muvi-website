@@ -77,18 +77,18 @@ const Footer = () => {
                             <li className="flex items-center">
                                 <FaEnvelope className="mr-2" />
                                 <a href="#" className="hover:text-gray-100 transition text-inherit no-underline break-all">
-                                    Email
+                                    ngulwa.lhusajo@gmail.com
                                 </a>
                             </li>
                             <li className="flex items-center">
                                 <FaPhone className="mr-2" />
                                 <a href="#" className="hover:text-gray-100 transition text-inherit no-underline">
-                                    Contact
+                                    +255625387142
                                 </a>
                             </li>
                             <li className="flex items-center hover:text-gray-100 transition text-inherit no-underline">
                                 <FaMapMarkerAlt className="mr-2" />
-                                Location
+                                Dar es salaam
                             </li>
                         </ul>
                     </div>
