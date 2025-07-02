@@ -77,7 +77,7 @@ const Footer = () => {
                             <li className="flex items-center">
                                 <FaEnvelope className="mr-2" />
                                 <a href="#" className="hover:text-gray-100 transition text-inherit no-underline break-all">
-                                    ngulwa.lhusajo@gmail.com
+                                    project.muvy.website@gmail.com
                                 </a>
                             </li>
                             <li className="flex items-center">
