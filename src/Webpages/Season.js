@@ -1,3 +1,4 @@
+/* eslint-disable complexity */
 import React, { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import 'swiper/swiper-bundle.css'; // Import Swiper styles
@@ -9,6 +10,8 @@ import List from '../components/List';
 import ReactGA from 'react-ga';
 
 
+
+
 const Season = () => {
     const location = useLocation();
     const { param } = location.state || {}; // Destructure param from state
@@ -16,6 +19,9 @@ const Season = () => {
     const [data, setData] = useState([]);
     const [isHeightTwiceWidth, setIsHeightTwiceWidth] = useState(false);
     const [centre, setCentre] = useState(0);
+    const [activeMedia, setActiveMedia] = useState(null);
+    const [selectedTrailer, setSelectedTrailer] = useState(null);
+    const [selectedServer, setSelectedServer] = useState(null);
 
        // Initialize Google Analytics
       useEffect(() => {
@@ -44,6 +50,17 @@ const Season = () => {
         window.scrollTo(0, 0);
     }, [data, centre]);
 
+    useEffect(() => {
+        setActiveMedia(null);
+        setSelectedTrailer(null);
+        setSelectedServer(null);
+    }, [centre]);
+
+    useEffect(() => {
+        if(activeMedia != null)
+        window.scrollTo(0, window.innerHeight - (isHeightTwiceWidth ? 0 : 200));
+    }, [activeMedia]);
+
     // Return null if no data is available
     if (!data[0]) {
             return(
@@ -52,10 +69,91 @@ const Season = () => {
                 </div>)
 
     }
-    
-    console.log(data[centre]);
-    
 
+    const getEpisodeEmbedSrc = (query, zuery, episodeNumber, server) => (
+    server === 'server2'
+        ? `https://www.2embed.cc/embedtv/${param.id}&s=${zuery}&e=${episodeNumber}`
+        : `https://vsembed.ru/embed/${param.id}/${zuery}-${episodeNumber}`
+);
+
+const SeasonMediaPanel = ({ activeMedia, selectedServer, selectedTrailer, setSelectedTrailer, setSelectedServer, data, centre, isHeightTwiceWidth }) => {
+    if (activeMedia === 'trailer') {
+        return (
+            <div className="px-2">
+                <div className="mt-4 w-full space-y-4">
+                    <div className="relative z-10 w-full whitespace-nowrap overflow-x-auto scrollbar-hide bg-slate-900/60 rounded-xl p-3">
+                        {data[centre].videos?.results
+                            ?.filter((trailer) => trailer.type === 'Trailer' || trailer.type === 'Teaser' || trailer.type === 'Recap')
+                            ?.map((trailer, index) => (
+                                <button
+                                    key={trailer.key || index}
+                                    type="button"
+                                    className="inline-block mr-3 rounded-full bg-slate-800 px-4 py-2 text-amber-100"
+                                    onClick={() => setSelectedTrailer(trailer)}
+                                >
+                                    {trailer.name}
+                                </button>
+                            ))}
+                    </div>
+
+                    {selectedTrailer ? (
+                        <iframe
+                            className={`w-full rounded-2xl h-[40vh] ${isHeightTwiceWidth ? 'md:h-[30vh]' : 'md:h-[50vh]'}`}
+                            src={`https://www.youtube.com/embed/${selectedTrailer.key}`}
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                            title="Selected Episode Trailer"
+                        />
+                    ) : null}
+                </div>
+            </div>
+        );
+    }
+
+    if (activeMedia === 'watch') {
+        const embedSrc = getEpisodeEmbedSrc('tv', data[centre].season_number, data[centre].episode_number, selectedServer);
+
+        return (
+            <div className="px-2">
+                <div className="mt-4 w-full space-y-4">
+                    <div className="flex flex-wrap gap-3">
+                        <button
+                            type="button"
+                            onClick={() => setSelectedServer('server1')}
+                            className={`rounded-full px-4 py-2 text-sm shadow-md transition-all ${selectedServer === 'server1' ? 'bg-amber-400 text-slate-900' : 'bg-slate-800 text-amber-100 hover:bg-slate-700'}`}
+                        >
+                            Server 1
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => setSelectedServer('server2')}
+                            className={`rounded-full px-4 py-2 text-sm shadow-md transition-all ${selectedServer === 'server2' ? 'bg-amber-400 text-slate-900' : 'bg-slate-800 text-amber-100 hover:bg-slate-700'}`}
+                        >
+                            Server 2
+                        </button>
+                    </div>
+
+                    {selectedServer ? (
+                        <iframe
+                            className={`w-full rounded-2xl h-[40vh] ${isHeightTwiceWidth ? 'md:h-[30vh]' : 'md:h-[50vh]'}`}
+                            src={embedSrc}
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                            title="Episode Player"
+                        />
+                    ) : (
+                        <div className="rounded-2xl bg-slate-900/60 p-6 text-amber-200 ring-1 ring-white/10">
+                            Choose a server to load the player.
+                        </div>
+                    )}
+                </div>
+            </div>
+        );
+    }
+
+    return null;
+};
+    
     return (
         <div className='w-full bg-gray-900'>
             <div className='relative w-full'>
@@ -71,10 +169,32 @@ const Season = () => {
 
                     {/* Content */}
                     <div className="relative z-10">
-                        <SeasonDeet movie={data[centre]} parent={param} />
+                        <SeasonDeet
+                            movie={data[centre]}
+                            parent={param}
+                            activeMedia={activeMedia}
+                            selectedServer={selectedServer}
+                            onToggleWatch={() => {
+                                setSelectedServer(null);
+                                setActiveMedia(activeMedia === 'watch' ? null : 'watch');
+                            }}
+                            onToggleTrailer={() => setActiveMedia(activeMedia === 'trailer' ? null : 'trailer')}
+                            onSelectServer={setSelectedServer}
+                        />
                     </div>
                 </div>
             </div>
+
+            <SeasonMediaPanel
+                activeMedia={activeMedia}
+                selectedServer={selectedServer}
+                selectedTrailer={selectedTrailer}
+                setSelectedTrailer={setSelectedTrailer}
+                setSelectedServer={setSelectedServer}
+                data={data}
+                centre={centre}
+                isHeightTwiceWidth={isHeightTwiceWidth}
+            />
 
             {/* Section to show available episodes */}
             <>

@@ -25,11 +25,15 @@ const MovieCarousel = ({ data }) => {
   useEffect(() => {
     const updateSlidesPerView = () => {
       const screenWidth = window.innerWidth;
-      const maxSlides = Math.floor(screenWidth / PROFILE_WIDTH);
+      const maxSlides = Math.floor(screenWidth / (2 * PROFILE_WIDTH));
       if (maxSlides > movies.length) {
         setSlidesPerView(movies.length);
       } else {
-        setSlidesPerView(maxSlides);
+        if (maxSlides < 3) {
+          setSlidesPerView(3);
+        }else{
+          setSlidesPerView(maxSlides);
+        }
       }
     };
 
@@ -71,45 +75,53 @@ const MovieCarousel = ({ data }) => {
   }
 
   return (
-    <div className={`relative flex flex-col justify-between ${isHeightTwiceWidth ? 'min-h-screen md:min-h-[50vh]' : 'h-screen'}`}>
+    <div className={`relative flex flex-col justify-between font-body max-h-screen ${isHeightTwiceWidth ? 'min-h-screen md:min-h-[50vh]' : 'h-screen'}`}>
       {/* Background div with the current center movie's image */}
       <div
         className={`absolute inset-0 bg-cover bg-center transition-opacity duration-500 ${isFading ? 'opacity-0' : 'opacity-100'}`}
         style={{ backgroundImage: backgroundImage }}
       >
+        {/* Overlay for side darkening */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-black/80"></div>
         {/* Overlay for opacity */}
-        <div className="absolute inset-0 bg-gray-900 opacity-40"></div>
+        <div className="absolute inset-0 bg-gray-900 opacity-45"></div>
+        <div className="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+
+        
       </div>
 
+
       {/* Content */}
-      <div className="relative z-10 flex flex-col justify-start h-full">
+      <div className="relative z-10 flex flex-col justify-start h-full mt-10">
         <MovieDetail movie={centerMovie} />
       </div>
 
       {/* Swiper */}
-      <div className="relative w-full flex items-end z-10">
-        <Swiper
-          spaceBetween={25}
-          slidesPerView={slidesPerView}
-          loop={true}
-          autoplay={{delay: 3000}} // Set autoplay with a delay of 3 seconds
-          onSlideChange={handleSlideChange}
-          className="relative z-20"
-        >
-          {movies.map((movie) => (
-            <SwiperSlide key={movie.id}>
-              {movie.id === centerMovie.id ? (
-                <div className="">
-                  <MovieProfile movie={movie} centered={movie.id === centerMovie.id} />
-                </div>
-              ) : (
-                <div className="mt-6">
-                  <MovieProfile movie={movie} centered={movie.id === centerMovie.id} />
-                </div>
-              )}
-            </SwiperSlide>
-          ))}
-        </Swiper>
+      <div className="absolute bottom-0 w-full md:w-6/12 self-end z-0 pr-4">
+        <div className="relative w-full backdrop-blur-md bg-slate-900/40 border border-white/10 rounded-2xl px-4 py-4 shadow-2xl">
+          <Swiper
+            spaceBetween={25}
+            slidesPerView={slidesPerView}
+            loop={true}
+            autoplay={{delay: 3000}} // Set autoplay with a delay of 3 seconds
+            onSlideChange={handleSlideChange}
+            className="relative z-20"
+          >
+            {movies.map((movie) => (
+              <SwiperSlide key={movie.id}>
+                {movie.id === centerMovie.id ? (
+                  <div className="transition-all duration-500">
+                    <MovieProfile movie={movie} centered={movie.id === centerMovie.id} />
+                  </div>
+                ) : (
+                  <div className="mt-6 transition-all duration-200">
+                    <MovieProfile movie={movie} centered={movie.id === centerMovie.id} />
+                  </div>
+                )}
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
       </div>
     </div>
   );

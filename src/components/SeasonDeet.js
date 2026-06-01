@@ -1,33 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { BiMoviePlay } from "react-icons/bi";
-import { FaStar, FaStarHalfAlt } from 'react-icons/fa'; // Importing icons from react-icons
+import { FaFilm, FaStar, FaStarHalfAlt } from 'react-icons/fa'; // Importing icons from react-icons
 import { PiVideoThin } from "react-icons/pi";
 import { Link } from 'react-router-dom';
 import Genres from './Genres';
-import TrailerDiv from './TrailerDiv';
 
-const SeasonDeet = ({ movie, genre, trailers ,parent }) => {
+const SeasonDeet = ({ movie, genre, trailers, parent, activeMedia, onToggleWatch, onToggleTrailer }) => {
     const {     name, season_number, vote_average,
                 overview, air_date, still_path,
                 poster_path, episode_number, id,
                 show_id, runtime, episode_type, episode_count 
             } = movie;
 
-    const [showTrailer, setShowTrailer] = React.useState(false);
-    const [showMuvi, setShowMuvi] = React.useState(false);
-    const [isHeightTwiceWidth, setIsHeightTwiceWidth] = useState(false);
-
-    useEffect(() => {
-        const screenWidth = window.innerWidth;
-        const screenHeight = window.innerHeight;
-        
-        setIsHeightTwiceWidth(screenHeight >= 1.5* screenWidth);
-    } ,[])
-
-    
-    
-
-
+    const [posterError, setPosterError] = useState(false);
+    const posterSrc = poster_path || still_path;
 
     // Generate stars based on rating
     const renderStars = (rating) => {
@@ -53,112 +39,131 @@ const SeasonDeet = ({ movie, genre, trailers ,parent }) => {
     };
 
     return (
-        <div className="relative text-white p-8 rounded-lg ml-[5vw] ">
-            <div className="relative z-0 max-w-2xl text-left mt-12 flex">
+        <div className="relative text-white px-4 md:px-8 py-10 font-body">
+            <div className="relative z-0 max-w-4xl text-left mt-10">
+                <div className="flex flex-col md:flex-row gap-8">
                 {/* Movie Poster */}
-                <div className="mr-8 md:flex hidden ">
-                    <img
-                        className="w-40 h-60 object-cover rounded-lg"
-                        src={`https://image.tmdb.org/t/p/original${poster_path || still_path}`}
-                        alt={parent.name}
-                    />
+                <div className="md:flex hidden w-72 shrink-0">
+                    {!posterSrc || posterError ? (
+                        <div className="w-full h-96 flex items-center justify-center rounded-2xl bg-slate-800 text-amber-300 shadow-2xl ring-1 ring-white/10">
+                            <FaFilm size={40} />
+                        </div>
+                    ) : (
+                        <img
+                            className="w-full h-96 object-cover rounded-2xl shadow-2xl ring-1 ring-white/10"
+                            src={`https://image.tmdb.org/t/p/original${posterSrc}`}
+                            alt={parent.name}
+                            onError={() => setPosterError(true)}
+                        />
+                    )}
                 </div>
 
                 {/* Movie Details */}
-                <div>
-                    {/* Title and Season */}
-                    <h1 className="text-4xl font-bold ">{parent.name}</h1>
-                    <h1 className="text-xl font-bold ">{name}</h1>
+                <div className="flex-1">
+                    <div className="flex flex-col gap-2">
+                        <h1 className="text-4xl md:text-5xl font-display tracking-tight">{parent.name}</h1>
+                        <h2 className="text-xl md:text-2xl font-display tracking-tight text-amber-200/90">{name}</h2>
+                    </div>
                     
 
                     {/* Ratings */}
-                    <div className="flex items-center space-x-2">
-                        {renderStars(Math.round((vote_average / 2) * 10) / 10)}
-                        <span className="ml-2"> {(Math.round((vote_average / 2) * 10) / 10)}/5</span>
+                    <div className="mt-4 flex flex-wrap items-center gap-3">
+                        <div className="flex items-center gap-2 rounded-full bg-slate-900/70 px-4 py-2 ring-1 ring-white/10">
+                            <span className="text-amber-300 font-semibold">
+                                {(Math.round((vote_average / 2) * 10) / 10)}/5
+                            </span>
+                            <span className="text-sm text-slate-300">Rating</span>
+                        </div>
+                        <div className="text-amber-300">{renderStars(Math.round((vote_average / 2) * 10) / 10)}</div>
                     </div>
 
                     {/* Genres */}
-                    {poster_path && <Genres genre={genre} />}
+                    {poster_path &&
+                        <div className="mt-3"><Genres genre={genre} /> </div>
+                    }
 
                     {/* Buttons */}
-                    <div className="flex items-center my-4">
-                    {poster_path ?
-                        <Link to={`/season/${parent.id}/${season_number}`} state={{param:parent}} className='no-underline'>
-                            <button className={`flex items-center bg-green-300 px-4 py-2 rounded-[5px]  shadow-md hover:bg-green-400 transition-all hover:px-10 hover:py-5`}>
-                            <div className='flex items-center flex-col'>
-                                    <PiVideoThin size={25} className=" ml-1 mr-1" />
-                                    <span>Watch Now</span>
-                                </div> 
-                            </button>
-                        </Link>
-                    :
-                        <button className={`flex items-center bg-green-300 px-4 py-2 rounded-[5px]  shadow-md hover:bg-green-400 transition-all ${showMuvi ? ' px-11 py-5' : 'hover:px-10 hover:py-5'}`}
-                                onClick={()=>{setShowTrailer(false) ;setShowMuvi(!showMuvi) }}>
-                                <div className='flex items-center flex-col'>
-                                    <PiVideoThin size={25} className=" ml-1 mr-1" />
-                                    <span>Watch Now</span>
-                                </div> 
-                        </button>
-                    }
-                        <button className={`flex items-center bg-gray-500 px-4 py-2 rounded-[5px]  shadow-md hover:bg-gray-600 transition-all ${trailers?'':'hidden'} ${showTrailer ? 'px-11 py-5' : 'hover:px-10 hover:py-5'}`}
-                            onClick={()=>{ setShowMuvi(false) ;setShowTrailer(!showTrailer) }}>
-                            <div className='flex items-center flex-col'>
+                    <div className="flex flex-wrap items-center mt-6 gap-3">
+                        {poster_path ? (
+                            <Link to={`/season/${parent.id}/${season_number}`} state={{param:parent}} className='no-underline'>
+                                <button className={`flex items-center bg-amber-400 text-slate-900 px-4 py-2 rounded-[10px] shadow-lg hover:bg-amber-300 transition-all`}>
+                                    <div className='flex items-center flex-col'>
+                                        <PiVideoThin size={25} className=" ml-1 mr-1" />
+                                        <span>Watch Now</span>
+                                    </div> 
+                                </button>
+                            </Link>
+                        ) : (
+                        <button
+                            className={`flex items-center bg-amber-400 text-slate-900 px-4 py-2 rounded-[10px] shadow-lg hover:bg-amber-300 transition-all ${
+                                activeMedia === 'watch' ? 'ring-2 ring-amber-200' : ''
+                            }`}
+                            onClick={onToggleWatch}
+                        >
+                            <div className="flex items-center flex-col">
+                                <PiVideoThin size={25} className="ml-1 mr-1" />
+                                <span>Watch Now</span>
+                            </div>
+                        </button>)
+                        }
+                        <button
+                            className={`flex items-center bg-slate-700 text-amber-100 px-4 py-2 rounded-[10px] shadow-md transition-all ${
+                                activeMedia === 'trailer' ? 'ring-2 ring-amber-200' : 'hover:bg-slate-600'
+                            } ${trailers && trailers.length > 0 ? '' : 'hidden'}`}
+                            onClick={onToggleTrailer}
+                        >
+                            <div className="flex items-center flex-col">
                                 <BiMoviePlay size={25} className="ml-1 mr-1" />
                                 <span> Watch Trailer</span>
                             </div>
                         </button>
                     </div>
-                    
-                    {/* TRAILERS */}
-                    {showTrailer && 
-                        <div className='realtive'>
-                            <TrailerDiv trailers={trailers} />
-                        </div>
-                    }
-                    {/* Movies && Series */}
-                    {showMuvi && 
-                        <div className='relative'>
-                            <div className='absolute top-0   h-full w-full'>
-                                <iframe
-                                className={`relative w-full  rounded-lg h-[40vh] md:w-[60vw]  ${isHeightTwiceWidth? 'md:h-[30vh]' :'md:h-[45vh]'} `}
-                                    src={`https://vidsrc.xyz/embed/tv/${parent.id}/${season_number}-${episode_number}`}
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                    allowFullScreen
-                                    title="Movie Trailer"
-                                />
-                            </div>
-                        </div>
-                    }
 
-
-                    <div className='space-y-0.5'>
-                        <p className='-mb-0.5'><span className='text-cyan-500'>Season no:</span> {season_number}</p>
-                        
-                        {episode_number ?
-                        <>
-                            <p><span className='text-cyan-500'>Episode no:</span> {episode_number}</p>          
-                            <p><span className='text-cyan-500'>Episode Type:</span> {episode_type}</p>
-                            <p><span className='text-cyan-500'>Release Date:</span> {air_date}</p>
-                        </>
-                        :
-                        <>
-                            <p><span className='text-cyan-500'>No. of Episodes:</span> {episode_count}</p>
-                            <p><span className='text-cyan-500'>Release Date:</span> {air_date}</p>
-                        </>}
+                    <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-slate-200">
+                        <div className="rounded-xl bg-slate-900/60 p-4 ring-1 ring-white/5">
+                            <p className="text-amber-300 text-xs uppercase tracking-widest">Season</p>
+                            <p className="mt-1 text-base font-semibold">{season_number}</p>
+                        </div>
+                        <div className="rounded-xl bg-slate-900/60 p-4 ring-1 ring-white/5">
+                            <p className="text-amber-300 text-xs uppercase tracking-widest">Status</p>
+                            <p className="mt-1 text-base font-semibold">{episode_number ? `Episode ${episode_number}` : 'Season Overview'}</p>
+                        </div>
+                        {episode_number ? (
+                            <>
+                                <div className="rounded-xl bg-slate-900/60 p-4 ring-1 ring-white/5">
+                                    <p className="text-amber-300 text-xs uppercase tracking-widest">Episode Type</p>
+                                    <p className="mt-1 text-base font-semibold">{episode_type}</p>
+                                </div>
+                                <div className="rounded-xl bg-slate-900/60 p-4 ring-1 ring-white/5">
+                                    <p className="text-amber-300 text-xs uppercase tracking-widest">Release</p>
+                                    <p className="mt-1 text-base font-semibold">{air_date}</p>
+                                </div>
+                            </>
+                        ) : (
+                            <>
+                                <div className="rounded-xl bg-slate-900/60 p-4 ring-1 ring-white/5">
+                                    <p className="text-amber-300 text-xs uppercase tracking-widest">Episodes</p>
+                                    <p className="mt-1 text-base font-semibold">{episode_count}</p>
+                                </div>
+                                <div className="rounded-xl bg-slate-900/60 p-4 ring-1 ring-white/5">
+                                    <p className="text-amber-300 text-xs uppercase tracking-widest">Release</p>
+                                    <p className="mt-1 text-base font-semibold">{air_date}</p>
+                                </div>
+                            </>
+                        )}
                     </div>
-                    
-                    
 
                     {/* Movie Description */}
-                    <div className=' -space-y-2'>
-                    <p className=' text-cyan-500'>Overview</p>
-                    <p className="text-white text-sm leading-relaxed w-[100%]">
-                        {overview? overview: parent.overview}
-                    </p>
+                    <div className="mt-8 rounded-2xl bg-slate-900/60 p-6 ring-1 ring-white/5">
+                        <p className="text-amber-300 text-xs uppercase tracking-[0.2em]">Overview</p>
+                        <p className="mt-3 text-white text-base leading-relaxed font-body">
+                            {overview? overview: parent.overview}
+                        </p>
                     </div>
-                    
                 </div>
             </div>
+
+        </div>
         </div>
     );
 };

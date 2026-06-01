@@ -1,0 +1,6 @@
+{
+    "sonarlint.connectedMode.project": {
+        "connectionId": "hanamax",
+        "projectKey": "HanamaX_project-muvi-website"
+    }
+}

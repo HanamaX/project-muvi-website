@@ -35,21 +35,21 @@ const Navbar = ({ def }) => {
     return (
         <>
             {/* Navbar */}
-            <nav className=" bg-white py-1 px-[2vw] flex justify-between items-center border-0 border-b-2 border-solid border-b-gray-100 border-opacity-30 bg-opacity-5">
+            <nav className="bg-white h-14 py-1 px-[2vw] flex justify-between items-center border-0 border-b-2 border-solid border-b-gray-100 border-opacity-30 bg-opacity-5 font-body">
                 {/* Search Icon */}
                 <div className="text-cyan-500 cursor-pointer md:hidden" onClick={() => setSearchActive(!searchActive)}>
                     <FaSearch size={24} />
                 </div>
 
                 {/* Logo */}
-                <div className={`text-white font-bold text-2xl ${menuActive?'hidden':'flex'} md:flex`}>
+                <div className={`text-white font-display text-2xl ${menuActive?'hidden':'flex'} md:flex`}>
                     Hanama<span className="text-cyan-500">X</span>
                 </div>
 
                 
                 
                 {/* Nav items */}
-                <ul className={`flex-row space-x-[2vw] md:space-x-8 -ml-[2vh] md:ml-0 text-white list-none ${menuActive ? 'flex' : 'hidden'} md:flex`}>
+                <ul className={`flex-row space-x-[2vw] md:space-x-8 -ml-[2vh] md:ml-0 text-white list-none font-body ${menuActive ? 'flex' : 'hidden'} md:flex`}>
                 {sections.map((item) => (
                         <li
                             key={item}
@@ -61,7 +61,7 @@ const Navbar = ({ def }) => {
                             <Link className=' no-underline text-inherit' to="/" state={{param:item}} >
                                 {item}
                             </Link>
-                            {active === item && <div className="absolute border-b-[2px] border-0 border-cyan-500 border-solid w-full border-opacity-40 mt-[2.82vh]"></div>}
+                            {active === item && <div className="absolute border-b-[2px] border-0 border-cyan-500 border-solid w-full border-opacity-40 mt-[15px]"></div>}
                         </li>
                     ))}
                 </ul>
@@ -79,7 +79,7 @@ const Navbar = ({ def }) => {
 
             {/* Search Field */}
             {searchActive && (
-                <div className="flex justify-end mt-4">
+                <div className="flex justify-end mt-4 font-body">
                     <input
                         type="text"
                         value={searchQuery}
@@ -94,7 +94,7 @@ const Navbar = ({ def }) => {
                             setSearchActive(false);
                             setActive(null)
                         }}
-                        className="ml-2 px-4 py-2 bg-cyan-500 text-white rounded-md"
+                        className="ml-2 px-4 py-2 bg-amber-400 text-slate-900 rounded-md"
                     >
                         Search
                     </button>
