@@ -144,7 +144,7 @@ const SeasonMediaPanel = ({ activeMedia, selectedServer, selectedTrailer, setSel
                             title="Episode Player"
                         />
                     ) : (
-                        <div className="rounded-2xl bg-slate-900/60 p-6 text-amber-200 ring-1 ring-white/10">
+                        <div className="rounded-2xl bg-slate-900/60 p-6 text-amber-200 ring-1 ring-white/10 animate-bounce">
                             Choose a server to load the player.
                         </div>
                     )}
