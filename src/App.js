@@ -28,5 +28,6 @@ const App = () => {
     </Router>
   );
 };
-
+// todo: add google analytics to all pages and events
+// todo: look at the todo.txt file for more details on the project and the future plans for it.
 export default App;

@@ -1,0 +1,1 @@
+    // todo: remove CI=false when deploying to production, this is only for development to prevent build errors due to missing environment variables

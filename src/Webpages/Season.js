@@ -56,10 +56,12 @@ const Season = () => {
         setSelectedServer(null);
     }, [centre]);
 
+    // Scroll to server selection when a watch movie or watch trailer is selected
     useEffect(() => {
-        if(activeMedia != null)
-        window.scrollTo(0, window.innerHeight - (isHeightTwiceWidth ? 0 : 200));
-    }, [activeMedia]);
+        if (activeMedia != null) {
+            window.scrollTo(0, window.innerHeight - (isHeightTwiceWidth ? 0 : 200));
+        }
+    }, [activeMedia, isHeightTwiceWidth]);
 
     // Return null if no data is available
     if (!data[0]) {

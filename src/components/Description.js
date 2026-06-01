@@ -1,7 +1,6 @@
-import React from 'react';
-import { FaPlay, FaStar, FaStarHalfAlt } from 'react-icons/fa'; // Importing icons from react-icons
-import { Link } from 'react-router-dom';
+import { FaStar, FaStarHalfAlt } from 'react-icons/fa'; // Importing icons from react-icons
 import { PiVideoThin } from "react-icons/pi";
+import { Link } from 'react-router-dom';
 import Genres from './Genres';
 
 const MovieDetail = ({ movie }) => {

@@ -201,9 +201,10 @@ const MuviDetail = () => {
 
     // Scroll to server selection when a watch movie or watch trailer is selected
     useEffect(() => {
-        if(activeMedia != null)
-        window.scrollTo(0, window.innerHeight - (isHeightTwiceWidth ? 0 : 200));
-    }, [activeMedia]);
+        if (activeMedia != null) {
+            window.scrollTo(0, window.innerHeight - (isHeightTwiceWidth ? 0 : 200));
+        }
+    }, [activeMedia, isHeightTwiceWidth]);
 
     if (!data[0]) {
         return(
