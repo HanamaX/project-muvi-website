@@ -209,7 +209,7 @@ async function getEpisode(id , season) {
     }
 }
 
-// EPISODES SECTION
+// SEASON TRAILER SECTION
 async function getSeasonTrailer(id , season) {
     try {
         const response = await axiosInstance.get(`/tv/${id}/season/${season}/videos`);

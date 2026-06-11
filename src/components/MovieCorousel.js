@@ -16,7 +16,7 @@ const MovieCarousel = ({ data }) => {
   const [isHeightTwiceWidth, setIsHeightTwiceWidth] = useState(false);
   const [backgroundImage, setBackgroundImage] = useState(null);
   const [isFading, setIsFading] = useState(false); // Track fade effect
-  const PROFILE_WIDTH = 130;
+  const PROFILE_WIDTH = 180;
 
   useEffect(() => {
     setMovies(data);
@@ -25,15 +25,16 @@ const MovieCarousel = ({ data }) => {
   useEffect(() => {
     const updateSlidesPerView = () => {
       const screenWidth = window.innerWidth;
-      const maxSlides = Math.floor(screenWidth / (2 * PROFILE_WIDTH));
+      const mediumDecimalSlides = screenWidth / (2.2 * PROFILE_WIDTH);
+      const smallDecimalSlides = screenWidth / (1.2 * PROFILE_WIDTH);
+      const mediumMaxSlides = (mediumDecimalSlides - Math.floor(mediumDecimalSlides)) > 0.4 ? Math.ceil(mediumDecimalSlides) : Math.floor(mediumDecimalSlides);
+      const smallMaxSlides = (smallDecimalSlides - Math.floor(smallDecimalSlides)) > 0.4 ? Math.ceil(smallDecimalSlides) : Math.floor(smallDecimalSlides);
+      const maxSlides = screenWidth < 768 ? smallMaxSlides : mediumMaxSlides;
+
       if (maxSlides > movies.length) {
         setSlidesPerView(movies.length);
       } else {
-        if (maxSlides < 3) {
-          setSlidesPerView(3);
-        }else{
-          setSlidesPerView(maxSlides);
-        }
+            setSlidesPerView(maxSlides);
       }
     };
 
@@ -97,7 +98,7 @@ const MovieCarousel = ({ data }) => {
       </div>
 
       {/* Swiper */}
-      <div className="absolute bottom-0 w-full md:w-6/12 self-end z-0 pr-4">
+      <div className="absolute bottom-0 w-full md:w-6/12 self-end pr-4">
         <div className="relative w-full backdrop-blur-md bg-slate-900/40 border border-white/10 rounded-2xl px-4 py-4 shadow-2xl">
           <Swiper
             spaceBetween={25}

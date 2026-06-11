@@ -9,13 +9,17 @@ const Footer = () => {
                 {/* Logo and Description */}
                 <div className="text-center mb-8">
                     <div className="flex justify-center items-center space-x-4 mb-4 ">
-                        <img src={Logo} alt="Logo" className="h-12 w-auto rounded-lg " />
-                        <span className="text-2xl font-display text-white">HanamaX Website</span>
+                        <img src={Logo} alt="Logo" className=" w-[10%] rounded-lg " />
+                        <span className="text-2xl font-display text-white">Muvi<span className="text-cyan-500">Website</span>
+</span>
                     </div>
-                    <div className='flex justify-center'>
-                    <p className='max-w-md text-left text-sm text-slate-300'>
-                    Discover the magic of cinema at project-muvi-website.com! Dive into a world of endless entertainment with our extensive collection of movies and TV shows. Join our community today and never miss out on the latest releases and exclusive content.
-                    </p>
+                    <div className='flex flex-col justify-center'>
+                        <p className='max-w-md text-left text-lg font-display italic text-amber-300'>
+                            every frame tells a story.
+                        </p>
+                        <p className='max-w-md text-left text-sm text-slate-400 mt-2'>
+                        MuviWebsite brings you closer to the movies and shows you love. Browse cast, trailers, ratings, and streaming details — all in one place.
+                        </p>
                     </div>
                     
 
@@ -37,7 +41,7 @@ const Footer = () => {
                 </div>
 
                 {/* Links and Contact */}
-                <div className="grid  -mt-3 grid-cols-2 lg:grid-cols-4 text-sm">
+                <div className="grid  -mt-3 grid-cols-2 lg:grid-cols-4 lg:px-20 text-sm w-full">
                     {/* About Us */}
                     <div>
                         <h4 className="text-lg font-display text-white mb-4">About Us</h4>
@@ -52,10 +56,9 @@ const Footer = () => {
                     <div>
                         <h4 className="text-lg font-display text-white mb-4">Important Links</h4>
                         <ul className="space-y-2 list-none">
-                            <li><a href="/" className="hover:text-gray-100 transition text-inherit no-underline">Home</a></li>
-                            <li><a href="/about" className="hover:text-gray-100 transition text-inherit no-underline">Tv Shows</a></li>
-                            <li><a href="/contact" className="hover:text-gray-100 transition text-inherit no-underline">Movies</a></li>
-                            <li><a href="/terms" className="hover:text-gray-100 transition text-inherit no-underline">Upcoming</a></li>
+                            <li><a href="/" className="hover:text-gray-100 transition text-inherit no-underline">Tv Shows</a></li>
+                            <li><a href="/" className="hover:text-gray-100 transition text-inherit no-underline">Movies</a></li>
+                            <li><a href="/" className="hover:text-gray-100 transition text-inherit no-underline">Upcoming</a></li>
                         </ul>
                     </div>
 
@@ -96,7 +99,7 @@ const Footer = () => {
             <hr className='opacity-15'/>
             {/* Footer Bottom */}
             <div className="mt-3 -mb-5 text-center text-gray-500 text-sm">
-                &copy; {new Date().getFullYear()} HanamaX. All rights reserved. <a href="/" className="hover:text-white text-inherit ">Terms & Conditions</a> · <a href="/" className="hover:text-white text-inherit ">Privacy Policy</a>
+                &copy; {new Date().getFullYear()} MuviWebsite. All rights reserved. <a href="/" className="hover:text-white text-inherit ">Terms & Conditions</a> · <a href="/" className="hover:text-white text-inherit ">Privacy Policy</a>
             </div>
         </footer>
     );

@@ -83,15 +83,26 @@ const SelectedDetail = ({ movie, trailers, activeMedia, onToggleWatch, onToggleT
                         <div className="mt-6 flex flex-wrap items-center gap-3">
                               {isMovie ? (
                                 <button
-                                    className={`flex items-center rounded-[10px] bg-amber-400 px-4 py-2 text-slate-900 shadow-lg transition-all hover:bg-amber-300 ${
-                                        activeMedia === 'watch' ? 'ring-2 ring-amber-200' : ''
-                                    }`}
+                                    className={`flex items-center rounded-[10px] bg-amber-400 px-4 py-2 text-slate-900 shadow-lg transition-all hover:bg-amber-300 
+                                    ${ activeMedia === 'watch' ? 'animate-border-spin' : '' }
+                                    ${release_date < new Date().toISOString().split('T')[0] ? '' : 'cursor-not-allowed opacity-70' }
+                                             `}
                                     onClick={onToggleWatch}
+                                    disabled={release_date > new Date().toISOString().split('T')[0]}
                                 >
+                                {release_date > new Date().toISOString().split('T')[0] ? 
+                                    <Tooltip content="Movie Not Yet Released">
+                                        <div className="flex items-center flex-col">
+                                            <PiVideoThin size={25} className="ml-1 mr-1" />
+                                            <span>Watch Now</span>
+                                        </div>
+                                    </Tooltip> 
+                                    :
                                     <div className="flex items-center flex-col">
-                                        <PiVideoThin size={25} className="ml-1 mr-1" />
-                                        <span>Watch Now</span>
+                                            <PiVideoThin size={25} className="ml-1 mr-1" />
+                                            <span>Watch Now</span>
                                     </div>
+                                    }
                                 </button>
                             ) : (
                                 <Tooltip content="Select a season to watch">

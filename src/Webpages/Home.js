@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import '../App.css';
 import List from '../components/List';
 import MovieCarousel from '../components/MovieCorousel';
-import { fetchHomeData, fetchMoviesData, fetchTvShowsData, fetchUpcomingData } from '../utils';
 import LoadingSpinner from '../components/Spinner';
-import ReactGA from 'react-ga';
+import { pageview } from '../ga';
+import { fetchHomeData, fetchMoviesData, fetchTvShowsData, fetchUpcomingData } from '../utils';
 
 function App() {
   const location = useLocation();
@@ -16,7 +16,7 @@ function App() {
 
    // Initialize Google Analytics
   useEffect(() => {
-    ReactGA.pageview(window.location.pathname);
+    pageview(window.location.pathname);
   }, []);
 
 
@@ -27,7 +27,7 @@ function App() {
       // Reset param after using it
       location.state = null;
     }
-    window.scrollTo(0, 0);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }, [param, location]);
   
 

@@ -96,7 +96,7 @@ const SeasonDeet = ({ movie, genre, trailers, parent, activeMedia, onToggleWatch
                         ) : (
                         <button
                             className={`flex items-center bg-amber-400 text-slate-900 px-4 py-2 rounded-[10px] shadow-lg hover:bg-amber-300 transition-all ${
-                                activeMedia === 'watch' ? 'ring-2 ring-amber-200' : ''
+                                activeMedia === 'watch' ? 'animate-border-spin' : ''
                             }`}
                             onClick={onToggleWatch}
                         >

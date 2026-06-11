@@ -27,11 +27,11 @@ const renderStars = (rating) => {
         <div className="flex flex-col gap-3">
           {title ? (
             <h1 className="text-4xl md:text-5xl font-display tracking-tight">
-              {title.split(":")[0]}
+              {title}
             </h1>
           ) : (
             <h1 className="text-4xl md:text-5xl font-display tracking-tight">
-              {name.split(":")[0]}
+              {name}
             </h1>
           )}
 
@@ -52,7 +52,7 @@ const renderStars = (rating) => {
           </div>
 
           {/* Buttons */}
-          <div className="flex items-center my-4">
+          <div className="flex items-center mb-3">
             <Link to={movie.first_air_date ? `/details/${'tv'}/${movie.id}` : `/details/${'movie'}/${movie.id}`} className="flex flex-col items-center no-underline" key={movie.id }>
               <button className="flex items-center bg-amber-400 text-slate-900 px-4 py-2 rounded-[10px] shadow-lg hover:bg-amber-300 transition-all">
                                   <div className='flex items-center flex-col'>
@@ -65,9 +65,9 @@ const renderStars = (rating) => {
         </div>
 
         {/* Movie Description */}
-        <div className="mt-6 rounded-2xl bg-slate-900/60 p-5 ring-1 ring-white/5">
+        <div className=" rounded-2xl bg-slate-900/60 p-5 ring-1 ring-white/5 ">
           <p className="text-amber-300 text-xs uppercase tracking-[0.2em]">Overview</p>
-          <p className="mt-3 text-white text-base leading-relaxed">
+          <p className="mt-3 text-white text-base line-clamp-5 md:line-clamp-none ">
             {overview}
           </p>
         </div>

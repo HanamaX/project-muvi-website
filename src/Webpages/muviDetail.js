@@ -5,11 +5,12 @@ import 'swiper/swiper-bundle.css'; // Import Swiper styles
 import List from '../components/List';
 import MovieProfile from '../components/MovieProfile';
 import SelectedDetail from '../components/SingleDescription';
-import { fetchSingleData, getSeasonTrailer } from '../utils';
+import { fetchSingleData, getSeasonTrailer, getEpisode } from '../utils';
 import SeasonDeet from '../components/SeasonDeet';
 import TrailerDiv from '../components/TrailerDiv';
 import LoadingSpinner from '../components/Spinner';
-import ReactGA from 'react-ga';
+import { pageview } from '../ga';
+import MovieSeasonEpisodes from '../components/MovieSeasonEpisodes';
 
 const getMovieEmbedSrc = (movieId, server) => (
     server === 'server2'
@@ -86,7 +87,7 @@ const MediaPanel = ({ activeMedia, selectedServer, showSeason, movieId, seasonDa
                             />
                         </div>
                     ) : (
-                        <div className="text-sm text-amber-200">Select a trailer to play.</div>
+                        <div className="text-sm text-amber-200">Select a trailer to play.</div >
                     )}
                 </div>
             </div>
@@ -99,8 +100,8 @@ const MediaPanel = ({ activeMedia, selectedServer, showSeason, movieId, seasonDa
             : getMovieEmbedSrc(movieId, selectedServer);
 
         return (
-            <div className="px-2">
-                <div className="mt-4 w-full space-y-4">
+            <div className={`px-2 ${!selectedServer ? 'animate-border-spin' : ''}`}>
+                <div className="mt-4 w-full space-y-4 ">
                     <div className="flex flex-wrap gap-3 ">
                         <button
                             type="button"
@@ -148,50 +149,79 @@ const MuviDetail = () => {
     const [isHeightTwiceWidth, setIsHeightTwiceWidth] = useState(false);
     const [showSeason, setShowSeason] = useState(false);
     const [seasonData, setSeasonData] = useState(null);  
-    const [seasonTrailer , setSeasonTrailer] = useState([])
+    const [seasonTrailer , setSeasonTrailer] = useState([]); // Holds season trailers
+    const [episodes, setEpisodes] = useState([]); // New state for episodes
     const [activeMedia, setActiveMedia] = useState(null);
     const [selectedTrailer, setSelectedTrailer] = useState(null);
     const [selectedServer, setSelectedServer] = useState(null);
-    
-    const handleSetSeason = async (movie) =>{
-        if(seasonData === movie){
-            setShowSeason(!showSeason);
+
+    const handleSetSeason = async (movie) => {
+        // 1. Check if the clicked season is identical to the currently displayed season data (ID and Season Number).
+        const isActiveSeason = seasonData && 
+                               seasonData.id === movie.id && 
+                               seasonData.season_number === movie.season_number;
+
+        if (isActiveSeason) {
+            console.log("Active season selected, skipping API calls.");
+            // CRITICAL FIX: If it's the same season, we only update the view state 
+            // and exit to prevent re-fetching stale data/resetting component state.
+        } else {
+            // New season selected: Proceed with fetching new data
+            try {
+                // Resetting relevant states before new fetch
+                setSeasonTrailer([]);
+                setEpisodes([]);
+
+                // Fetch necessary data for the NEW season
+                const seasonTrailerData = await getSeasonTrailer(data[0].id, movie.season_number);
+                setSeasonTrailer(seasonTrailerData);
+                setSeasonData(movie);
+
+                const episodeData = await getEpisode(data[0].id, movie.season_number);
+                setEpisodes(episodeData); 
+            } catch (error) {
+                console.error("Error fetching season or episode data:", error);
+                // Resetting state on failure is important for user feedback
+                alert("Failed to load new season/episode data.");
+            }
         }
-        else{
-        const dataz = await getSeasonTrailer(data[0].id ,movie.season_number)
-        setSeasonTrailer(dataz)
-        setSeasonData(movie); 
-        setShowSeason(true);
-        }
-        window.scrollTo(0, 0);
+        
+        // CRITICAL FIX: Regardless of whether the API was called, we ensure 
+        // setShowSeason(true) is called if a season is selected, guaranteeing 
+        // the UI always enters the season view correctly.
+        setShowSeason(!showSeason);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-       // Initialize Google Analytics
-      useEffect(() => {
-        ReactGA.pageview(window.location.pathname);
-      }, []);
+    // Initialize Google Analytics
+    useEffect(() => {
+        pageview(window.location.pathname);
+    }, []);
 
     useEffect(() => {
         const screenWidth = window.innerWidth;
         const screenHeight = window.innerHeight;
-        setIsHeightTwiceWidth(screenHeight >= 1.5* screenWidth);
-    } ,[])
+        setIsHeightTwiceWidth(screenHeight >= 1.5 * screenWidth);
+    }, []);
 
     useEffect(() => {
         const getDetail = async () => {
-            const data = await fetchSingleData(query, zuery);
-            setData(data);
+            try {
+                const data = await fetchSingleData(query, zuery);
+                setData(data);
+            } catch (error) {
+                console.error("Error fetching movie data:", error);
+            }
         };
 
         getDetail();
-    }, [query ,zuery]);
-
+    }, [query, zuery]);
     const head= query==='movie'?'Movies':'Tv Shows';
 
+    // Scroll to the top of the page when data changes
     useEffect(() => {
-        // Scroll to the top of the page when data changes
-        window.scrollTo(0, 0);
-    }, [data , seasonData]);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, [data, seasonData]);
 
     useEffect(() => {
         setActiveMedia(null);
@@ -207,14 +237,13 @@ const MuviDetail = () => {
     }, [activeMedia, isHeightTwiceWidth]);
 
     if (!data[0]) {
-        return(
+        return (
             <div className=" fixed bg-slate-950 flex items-center justify-center h-screen scrollbar-hide w-screen z-20">
                 <LoadingSpinner />
-            </div>)
-                }
+            </div>
+        );
+    }
 
-    
-    
 
     return (
         <div className='w-full  bg-gray-900'>
@@ -222,7 +251,7 @@ const MuviDetail = () => {
                 {/* Background image applied to parent with pseudo-element for opacity */}
                 {/*When season is clicked show season details */}
                 <div
-                    className={`relative w-full ${isHeightTwiceWidth?'min-h-screen md:min-h-[50vh]':'min-h-screen'} bg-cover bg-center`}
+                    className={`relative w-full ${isHeightTwiceWidth ? 'min-h-screen md:min-h-[50vh]' : 'min-h-screen'} bg-cover bg-center`}
                     style={{
                         backgroundImage: `url('https://image.tmdb.org/t/p/original${data[0].backdrop_path}')`,
                     }}
@@ -244,71 +273,93 @@ const MuviDetail = () => {
                             onToggleWatch={() => {
                                 setSelectedServer(null);
                                 setActiveMedia(activeMedia === 'watch' ? null : 'watch');
-                            }}
+                                }}
                             onToggleTrailer={() => setActiveMedia(activeMedia === 'trailer' ? null : 'trailer')}
                             onSelectServer={setSelectedServer}
                         />
                     </div>
                 </div>
-                
-            </div>
 
-            <MediaPanel
-                activeMedia={activeMedia}
-                selectedServer={selectedServer}
-                showSeason={showSeason}
-                movieId={data[0].id}
-                seasonData={seasonData}
-                seasonTrailer={seasonTrailer}
-                trailers={data[2]}
-                isHeightTwiceWidth={isHeightTwiceWidth}
-                selectedTrailer={selectedTrailer}
-                onSelectTrailer={setSelectedTrailer}
-                onSelectServer={setSelectedServer}
-            />
+                <MediaPanel
+                    activeMedia={activeMedia}
+                    selectedServer={selectedServer}
+                    showSeason={showSeason}
+                    movieId={data[0].id}
+                    seasonData={seasonData}
+                    seasonTrailer={seasonTrailer}
+                    trailers={data[2]}
+                    isHeightTwiceWidth={isHeightTwiceWidth}
+                    selectedTrailer={selectedTrailer}
+                    onSelectTrailer={setSelectedTrailer}
+                    onSelectServer={setSelectedServer}
+                />
 
-            {/* FOR SEASONS TO SHOW THE AVAILABLE SEASONS */}
-            {data[0].seasons?
-            <>
-                <h1 className='text-amber-300 ml-2 font-serif font-extralight text-[5vw] md:text-[2vw]'>Seasons</h1>
-                <div className="relative z-10 w-full py-6 overflow-x-auto scrollbar-hide">
-                    <div className="absolute left-1/2 top-12 h-36 w-[160%] -translate-x-1/2 rounded-full border-t border-slate-600/40 pointer-events-none"></div>
-                    <div className="relative flex items-end gap-4 px-4 pb-8 snap-x snap-mandatory">
-                        {data[0].seasons.map((movie) => (
-                            <div
-                                key={movie.id}
-                                className="snap-center cursor-pointer"
-                                onClick={() => { handleSetSeason(movie) }}
-                            >
-                                <MovieProfile movie={movie} season={true} />
+                {/* Responsive Layout for Seasons and Episodes */}
+                {data[0].seasons && (
+                    <div className="mt-16 pt-8 border-t border-slate-700 flex flex-col md:flex-row gap-4">
+                        
+                        {/* 1. Season Selector List (Takes half width on large screens) */}
+                        <div className="w-full md:w-1/2">
+                            <h1 className='text-amber-300 ml-2 font-serif font-extralight text-[5vw] md:text-[2vw]'>Seasons</h1>
+                            <div className="relative z-10 w-full py-6 overflow-x-auto scrollbar-hide">
+                                <div 
+                                    className="absolute top-12 h-36 rounded-full border-t border-slate-600/40 pointer-events-none" 
+                                    style={{ width: `${Math.max( data[0].seasons.length * 201)}px` }}
+                                ></div>
+                                {/* The season list container remains horizontal scroll */}
+                                
+                                <div className="relative flex items-end gap-4 px-4 pb-8 snap-x snap-mandatory">
+                                    {data[0].seasons.map((movie) => (
+                                        <div
+                                            key={movie.id}
+                                            className="snap-center cursor-pointer"
+                                            onClick={() => handleSetSeason(movie)}
+                                        >
+                                            <MovieProfile movie={movie} season={true} type="MOVIE" seasonName={data[0].name} />
+                                        </div >
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* 2. Episode Viewer (Takes half width on large screens, scrollable) */}
+                        <div className="w-full px-3 md:max-w-[48%]">
+                            {showSeason ? (
+                                <>
+                                    {/* Display Episode List when showSeason is true - Limited to 5 items and scrollable */}
+                                    <MovieSeasonEpisodes
+                                        tvId={data[0].id}
+                                        seasonNumber={seasonData.season_number}
+                                    />
+                                </>
+                            ) : (
+                                <div className="text-slate-400 p-4">Select a season to view episodes here.</div>
+                            )}
+                        </div>
+
+                    </div>
+                )}
+
+            {/* CONDITIONAL CAST SECTION */}
+            {data[1] && data[1].cast && data[1].cast.length > 0 ? (
+                <div className="mt-16 pt-8 border-t border-slate-700">
+                    <h1 className='text-cyan-500 ml-2 font-serif font-extralight text-[5vw] md:text-[2vw]'>Cast</h1>
+                    <div className="relative z-10 w-full whitespace-nowrap overflow-x-auto flex flex-row">
+                        {data[1].cast.map((movie) => (
+                            <div key={movie.id} className="p-2 shrink-0">
+                                <MovieProfile movie={movie} type="CAST" />
                             </div>
                         ))}
                     </div>
                 </div>
-            </>
-                
-            :
-            null}
+            ) : null}
+            {/* END CONDITIONAL CAST SECTION */}
 
-            <div>
-                <h1 className='text-cyan-500 ml-2 font-serif font-extralight text-[5vw] md:text-[2vw]'>Cast</h1>
-                <div className="relative z-10 w-full whitespace-nowrap overflow-x-auto scrollbar-hide">
-                    {data[1].cast.map((movie) => (
-                        <div
-                            key={movie.id}
-                            className="inline-block p-2 box-border"
-                        >
-                            <MovieProfile movie={movie} />
-                        </div>
-                    ))}
-                </div>
-            </div>
-            
-            
 
             <div>
                 <List items={data[3]} head={`${head} You might Like`} />
             </div>
+        </div>
         </div>
     );
 };

@@ -3,7 +3,7 @@ import { FaSearch ,FaTimes ,FaBars } from 'react-icons/fa';
 import { Link, useLocation } from 'react-router-dom';
 
 const Navbar = ({ def }) => {
-    const sections = ['Home', 'Tv Shows', 'Movies', 'Upcoming'];
+    const sections = ['Tv Shows', 'Movies', 'Upcoming'];
     const [latest, setLatest] = useState(def);
     const [menuActive, setMenuActive] = useState(false);
     const [searchActive, setSearchActive] = useState(false);
@@ -35,15 +35,20 @@ const Navbar = ({ def }) => {
     return (
         <>
             {/* Navbar */}
-            <nav className="bg-white h-14 py-1 px-[2vw] flex justify-between items-center border-0 border-b-2 border-solid border-b-gray-100 border-opacity-30 bg-opacity-5 font-body">
+            <nav className=" h-14 py-1 px-[2vw] flex justify-between items-center border-0 border-b-2 border-solid border-b-gray-100 border-opacity-30 backdrop-blur-sm font-body">
                 {/* Search Icon */}
                 <div className="text-cyan-500 cursor-pointer md:hidden" onClick={() => setSearchActive(!searchActive)}>
                     <FaSearch size={24} />
                 </div>
 
                 {/* Logo */}
-                <div className={`text-white font-display text-2xl ${menuActive?'hidden':'flex'} md:flex`}>
-                    Hanama<span className="text-cyan-500">X</span>
+                <div 
+                    className={`text-white font-display text-2xl ${menuActive?'hidden':'flex'} md:flex cursor-pointer`} 
+                    onClick={() => handleSectionClick('home')}
+                >
+                    <Link to="/" className="no-underline flex items-center" aria-label="Muviwebsite Home">
+                        <span>Muvi</span><span className="text-cyan-500">Website</span>
+                    </Link>
                 </div>
 
                 

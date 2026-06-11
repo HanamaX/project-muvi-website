@@ -1,44 +1,86 @@
-import React, { useState } from 'react';
-import { FaFilm, FaUserCircle } from 'react-icons/fa';
+import React from 'react';
+import PropTypes from 'prop-types'; 
+// Corrected import path to ensure MovieCardRenderer is visible to the component
+import MovieCardRenderer from './MovieCardRenderer'; 
 
-const MovieProfile = ({ movie, season }) => {
-  const [imageError, setImageError] = useState(false);
+/**
+ * Orchestrates the movie card display by determining type-specific data 
+ * (hover text, bottom text) and passing it to the presentation component.
+ * @param {object} props - Component props.
+ * @param {object} props.movie - The raw TMDb/Movie object.
+ * @param {'MOVIE' | 'EPISODE' | 'CAST'} props.type - The explicit type of content being displayed.
+ * @param {number} [props.episodeNumber] - Optional episode number for display consistency.
+ * @param {string} [props.seasonName] - Optional season name for display consistency.
+ * @param {boolean} [props.isReleased] - Optional flag to indicate if the movie is released.
+ */
+const MovieProfile = ({ movie, type, episodeNumber ,seasonName , isReleased }) => {
+  let imageUrl = '';
+  let hoverText = '';
+  let bottomText = '';
   const imagePath = movie.poster_path || movie.profile_path || movie.still_path;
-  const isPerson = Boolean(movie.profile_path || movie.character);
+  const fullImageUrl = imagePath ? `https://image.tmdb.org/t/p/w500${imagePath}` : '';
+
+  if (type === undefined) {
+    type = 'MOVIE'; // Default to MOVIE if type is not provided, ensuring backward compatibility with existing calls.
+  }
+
+  // --- Logic to determine props based on content TYPE (The Orchestration Layer) ---
+  
+  if (!movie || !type) {
+    console.error("MovieProfile requires both 'movie' and 'type' props.");
+    return null; 
+  }
+
+  switch (type) {
+
+    case 'EPISODE':
+      // Episode: Season/Episode info for hover, episode number in the static bottom text area.
+      const seasonNum = movie.season_number || 'N/A';
+      const episodeNum = episodeNumber || 1;
+      
+      imageUrl = fullImageUrl;
+
+      // 1. Hover Text (Name 1): "Season X, Episode Y"
+      hoverText = movie.name ;
+      
+      // 2. Bottom Text: Specific episode identifier ("Episode 1", etc.)
+      bottomText = `S${seasonNum} E${episodeNum}`;
+      break;
+
+    case 'CAST':
+      // Cast Member: Title for hover, character name/role in the static bottom text area (or just use it as part of the main card's footer).
+      imageUrl = fullImageUrl;
+      hoverText = movie.title || movie.name; // Use title/name as primary identifier on hover
+      bottomText = `Role: ${movie.character ? movie.character : 'N/A'}`;
+      break;
+
+    case 'MOVIE':
+    default:
+      // Standard Movie: Title for hover, generic text/placeholder for bottom if no episode data is available.
+      imageUrl = fullImageUrl;
+      hoverText = seasonName? seasonName : null; 
+      bottomText = movie.title || movie.name; // No specific footer needed for generic movie cards here.
+      break;
+
+  }
+
 
   return (
-    <div className="flex flex-col items-center bottom-0">
-      {!imagePath || imageError ? (
-        <div className="w-32 h-44 flex items-center justify-center rounded-sm shadow-md shadow-black bg-slate-800 text-amber-300">
-          {season ? <FaFilm size={36} /> : isPerson ? <FaUserCircle size={36} /> : <FaFilm size={36} />}
-        </div>
-      ) : (
-        <img
-          src={`https://image.tmdb.org/t/p/w500${imagePath}`}
-          alt={movie.title || movie.name}
-          onError={() => setImageError(true)}
-          className={`${movie.still_path ? 'h-40' : 'h-44'} w-full object-cover rounded-sm shadow-md shadow-black`}
-        />
-      )}
-      <div className="movie-info mt-2">
-        {movie.title ? (
-          <h3 className="text-white text-sm text-center font-semibold w-32 break-words overflow-hidden">
-            {movie.title.split(":")[0]}
-          </h3>
-        ) : (
-          <h3 className="text-white text-sm text-center font-semibold w-32 overflow-clip">
-            {movie.name.split(":")[0]} <br />
-            {movie.character ? (
-              <span className="text-[10px]">( {movie.character.split(" (")[0]} )</span>
-            ) : null}
-          </h3>
-        )}
-        {season ? (
-          <p className="text-white text-xs text-center">{movie.episode_count} Episodes</p>
-        ) : null}
-      </div>
-    </div>
+    <MovieCardRenderer 
+        imageUrl={imageUrl} 
+        hoverText={hoverText} 
+        bottomText={bottomText} 
+        type={type}
+        isReleased={isReleased}
+    />
   );
+};
+
+MovieProfile.propTypes = {
+  movie: PropTypes.object.isRequired,
+  type: PropTypes.oneOf(['MOVIE', 'EPISODE', 'CAST']).isRequired,
+  episodeNumber: PropTypes.number, // Optional prop for episodes
+  isReleased: PropTypes.bool // Optional flag to indicate if the movie is released
 };
 
 export default MovieProfile;

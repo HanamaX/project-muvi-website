@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 import '../App.css';
 import List from '../components/List';
 import { getByName } from '../utils';
-import ReactGA from 'react-ga';
+import { pageview } from '../ga';
 
 
 function SearchResult() {
@@ -14,7 +14,7 @@ function SearchResult() {
 
      // Initialize Google Analytics
     useEffect(() => {
-      ReactGA.pageview(window.location.pathname);
+      pageview(window.location.pathname);
     }, []);
 
   useEffect(() => {
@@ -38,9 +38,9 @@ function SearchResult() {
 
   return (
     <div className="App bg-gray-900 text-white relative min-h-screen h-full">
-      <section className="mx-auto relative h-full pt-12">
+      <section className="mx-auto relative h-full pt-[8vh]">
         <h3 className="text-left pl-3 text-cyan-500">
-          Search results for.. <span className="text-white">{query}</span>
+          Search results for..  <span className="text-white">{query}</span>
         </h3>
         
         {/* Filter UI */}

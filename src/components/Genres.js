@@ -22,7 +22,7 @@ const Genres = ({ genreIds, genre }) => {
 
     return (
 
-        <div className="flex my-4 text-sm flex-wrap">
+        <div className="flex my-2 text-sm flex-wrap">
           {genreNames.map((name, index) => (
             <span
               key={index}

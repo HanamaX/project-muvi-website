@@ -7,7 +7,8 @@ import SeasonDeet from '../components/SeasonDeet';
 import LoadingSpinner from '../components/Spinner';
 import { getEpisode } from '../utils';
 import List from '../components/List';
-import ReactGA from 'react-ga';
+import MovieSeasonEpisodes from '../components/MovieSeasonEpisodes';
+import { pageview } from '../ga';
 
 
 
@@ -25,7 +26,7 @@ const Season = () => {
 
        // Initialize Google Analytics
       useEffect(() => {
-        ReactGA.pageview(window.location.pathname);
+        pageview(window.location.pathname);
       }, []);
 
     // Check if the screen height is at least 1.5 times the screen width
@@ -47,7 +48,7 @@ const Season = () => {
 
     // Scroll to the top of the page when data changes
     useEffect(() => {
-        window.scrollTo(0, 0);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
     }, [data, centre]);
 
     useEffect(() => {
@@ -199,35 +200,51 @@ const SeasonMediaPanel = ({ activeMedia, selectedServer, selectedTrailer, setSel
             />
 
             {/* Section to show available episodes */}
-            <>
-                <h1 className='text-cyan-500 ml-2 font-serif font-extralight text-[5vw] md:text-[2vw]'>Episodes</h1>
-                <div className="relative z-10 w-full whitespace-nowrap overflow-x-auto scrollbar-hide">
-                    {data.map((movie, index) => (
-                        <div
-                            key={movie.id}
-                            className="inline-block p-2 box-border cursor-pointer"
-                            onClick={() => setCentre(index)}
-                        >
-                            <MovieProfile movie={movie} />
+            <div className="mt-16 pt-8 border-t border-slate-700 flex flex-col md:flex-row gap-4">
+                {/* Left: Episode List */}
+                <div className="w-full md:w-1/2">
+                    <h1 className='text-amber-300 ml-2 font-serif font-extralight text-[5vw] md:text-[2vw]'>Episodes</h1>
+                    <div className="relative z-10 w-full py-6 overflow-x-auto scrollbar-hide">
+                        <div 
+                            className="absolute left-1/2 top-12 h-36 -translate-x-1/2 rounded-full border-t border-slate-600/40 pointer-events-none" 
+                            style={{ width: `${Math.max(160, data.length * 30)}%` }}
+                        ></div>
+                        <div className="relative flex items-end gap-4 px-4 pb-8 snap-x snap-mandatory">
+                            {data.map((movie, index) => {
+                                const isReleased = movie.air_date && new Date(movie.air_date) >= new Date() ? false : true;
+                                return (
+                                    <div
+                                        key={movie.id}
+                                        className="snap-center cursor-pointer"
+                                        onClick={isReleased ? () => setCentre(index) : undefined}
+                                    >
+                                        <MovieProfile movie={movie} isReleased={isReleased} type="EPISODE" episodeNumber={index + 1} />
+                                    </div>
+                                );
+                            })}
                         </div>
-                    ))}
+                    </div>
                 </div>
-            </>
 
-            {/* Section to show cast */}
-            <div>
-                <h1 className='text-cyan-500 ml-2 font-serif font-extralight text-[5vw] md:text-[2vw]'>Cast</h1>
-                <div className="relative z-10 w-full whitespace-nowrap overflow-x-auto scrollbar-hide">
-                    {data[centre].guest_stars.map((movie) => (
-                        <div
-                            key={movie.id}
-                            className="inline-block p-2 box-border"
-                        >
-                            <MovieProfile movie={movie} />
-                        </div>
-                    ))}
+                {/* Right: Episode Table */}
+                <div className="w-full px-3 md:max-w-[48%]">
+                    <MovieSeasonEpisodes tvId={query} seasonNumber={zuery} />
                 </div>
             </div>
+
+            {/* Section to show cast */}
+            {data[centre].guest_stars && data[centre].guest_stars.length > 0 ? (
+                <div className="mt-8">
+                    <h1 className='text-cyan-500 ml-2 font-serif font-extralight text-[5vw] md:text-[2vw]'>Cast</h1>
+                    <div className="relative z-10 w-full whitespace-nowrap overflow-x-auto scrollbar-hide flex flex-row">
+                        {data[centre].guest_stars.map((movie) => (
+                            <div key={movie.id} className="p-2">
+                                <MovieProfile movie={movie} type="CAST" />
+                            </div>
+                        ))}
+                    </div>
+                </div>
+            ) : null}
 
             {/* Uncomment this section if you want to show a list of recommended items */}
             <div>

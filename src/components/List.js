@@ -10,9 +10,9 @@ const List = ({ items, head , parent }) => {
   
 
   return (
-    <>
+    <div className={`${filteredItems.length <=0 ? 'hidden' : 'flex flex-col'}`}>
       <h1 className='text-left md:text-[2vw] text-[5vw] font-display font-semibold ml-[1vw] text-amber-300 tracking-tight'>{head}</h1>
-      <div className="grid grid-cols-4 sm:grid-cols-6 gap-1">
+      <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-1">
         {itemsToShow.map((movie, index) => {
           const target = parent
             ? `/season/${parent.id}/${movie.season_number}`
@@ -36,15 +36,15 @@ const List = ({ items, head , parent }) => {
                     isActive ? 'opacity-100' : 'opacity-0'
                   } group-hover:opacity-100`}
                 >
-                  <div className="absolute bottom-0 left-0 right-0 h-[40%] px-3 py-2 flex items-center gap-3">
+                  <div className="absolute bottom-0 left-0 right-0 sm:h-full md:h-[40%] w-[95%] overflow-hidden px-3 py-2 flex items-center gap-3">
                     <img
                       src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                       alt={movie.title || movie.name}
                       className="h-12 w-12 rounded-full object-cover ring-2 ring-amber-300 sm:block hidden" 
                     />
-                    <div className="flex flex-col gap-1">
-                      <p className="text-base text-amber-100 font-semibold leading-tight md:h-full h-10 overflow-hidden ">
-                        {(movie.title || movie.name || '').split(':')[0]}
+                    <div className="flex flex-col gap-1 min-w-[45%]">
+                      <p className=" text-left text-wrap overflow-ellipsis text-sm text-amber-100 font-semibold leading-tight md:h-full h-full w-[95%] ">
+                        {(movie.title || movie.name || '')}
                       </p>
                       <Link
                         to={target}
@@ -58,24 +58,18 @@ const List = ({ items, head , parent }) => {
                 </div>
               </div>
 
-              {/* <button
-                type="button"
-                onClick={() => setActiveOverlayId(isActive ? null : overlayId)}
-                className="mt-1 md:hidden px-3 py-1 text-xs rounded-md bg-slate-800 text-amber-200"
-              >
-                View
-              </button> */}
+
             </div>
           );
         })}
       </div>
-      <button
-        onClick={() => setShowAll(!showAll)}
-        className="mt-1 px-4 py-2 bg-amber-400 text-slate-900 rounded-md absolute right-[2vw]"
-      >
-        {showAll ? 'Less' : 'More'}
+        <button
+          onClick={() => setShowAll(!showAll)}
+          className={`mt-3 relative end-0 self-end px-4 py-2 bg-amber-500 text-slate-900 rounded-lg hover:bg-amber-600 transition duration-150 ease-in-out ${filteredItems.length <= 12 ? 'hidden' : 'block'}`}
+        >
+          {showAll ? 'Less' : 'More'}
       </button>
-    </>
+    </div>
   );
 };
 
